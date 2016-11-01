@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_deep"
-    tools:context="com.hyphenate.chatuidemo.ui.GuideActivity">
+    android:background="@color/colorPrimary"
+    tools:context="cn.ucai.superwechat.ui.GuideActivity">
     <ImageView
         android:id="@+id/iv_welecome_logo"
         android:layout_width="wrap_content"
@@ -15,12 +15,11 @@
     android:id="@+id/btn_login"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
-    android:background="@color/btn_green_noraml"
+    android:background="#459F3F"
     android:layout_below="@id/iv_welecome_logo"
     android:layout_centerHorizontal="true"
     android:layout_marginTop="20dp"
-    android:text="Login"
-
+    android:text="@string/login"
     android:textColor="@color/background_white"
     />
     <Button
@@ -30,8 +29,7 @@
         android:layout_below="@id/btn_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-
-        android:text="Sign up"
+        android:text="@string/register"
         />
 
 </RelativeLayout>

@@ -3,7 +3,7 @@
     android:id="@+id/splash_root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/black_deep" >
+    android:background="@color/colorPrimary" >
 
     <ImageView
         android:id="@+id/iv_splash_logo"
