@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
 				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(conversationListFragment)
 				.commit();
 
-		//register broadcast receiver to receive the change of group from DemoHelper
+		//register broadcast receiver to receive the change of group from SuperwechatHelper
 		registerBroadcastReceiver();
 		
 		

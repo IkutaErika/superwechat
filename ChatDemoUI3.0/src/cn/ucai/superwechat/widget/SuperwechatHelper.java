@@ -76,7 +76,7 @@ public class SuperwechatHelper {
         void onSyncComplete(boolean success);
     }
 
-    protected static final String TAG = "DemoHelper";
+    protected static final String TAG = "SuperwechatHelper";
     
 	private EaseUI easeUI;
 	

@@ -1,4 +1,4 @@
-package cn.ucai.superwechat.utils;
+package cn.ucai.superwechat.data;
 
 import android.content.Context;
 import android.os.Handler;
@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.widget.I;
 import cn.ucai.superwechat.widget.SuperwechatApplication;
 import cn.ucai.superwechat.bean.Result;

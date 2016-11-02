@@ -9,7 +9,7 @@ import com.hyphenate.chat.EMClient;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import cn.ucai.superwechat.DemoHelper;
+import cn.ucai.superwechat.widget.SuperwechatHelper;
 import cn.ucai.superwechat.R;
 
 /**
@@ -37,7 +37,7 @@ public class SplashActivity extends BaseActivity {
 
         new Thread(new Runnable() {
             public void run() {
-                if (DemoHelper.getInstance().isLoggedIn()) {
+                if (SuperwechatHelper.getInstance().isLoggedIn()) {
                     // auto login mode, make sure all group and conversation is loaed before enter the main screen
                     long start = System.currentTimeMillis();
                     EMClient.getInstance().groupManager().loadAllGroups();
@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
                     }
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SplashActivity.this, GuideActivity.class));
                     finish();
                 }
             }
