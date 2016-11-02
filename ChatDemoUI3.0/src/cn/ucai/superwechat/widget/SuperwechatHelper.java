@@ -218,6 +218,11 @@ public class SuperwechatHelper {
             public EaseUser getUser(String username) {
                 return getUserInfo(username);
             }
+
+            @Override
+            public User getAppUser() {
+                return getCurrentuser();
+            }
         });
 
         //set options 

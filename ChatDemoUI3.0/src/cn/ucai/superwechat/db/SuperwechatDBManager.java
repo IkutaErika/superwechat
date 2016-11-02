@@ -393,8 +393,8 @@ public class SuperwechatDBManager {
 
     public synchronized User getUser(String username) {
         SQLiteDatabase DB=dbHelper.getReadableDatabase();
-        String sql="select * from "+UserDao.USER_TABLE_NAME
-                +" where "+UserDao.USER_COLUMN_NAME+" =?";
+        String sql=" select * from "+UserDao.USER_TABLE_NAME
+                +" where "+UserDao.USER_COLUMN_NAME+" = ?";
         User user=null;
         Cursor cursor=DB.rawQuery(sql,new String[]{username});
         if (cursor.moveToNext())
