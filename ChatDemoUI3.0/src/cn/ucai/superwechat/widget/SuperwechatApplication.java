@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.ucai.superwechat;
+package cn.ucai.superwechat.widget;
 
 import android.app.Application;
 import android.content.Context;
@@ -19,10 +19,12 @@ import android.support.multidex.MultiDex;
 
 import com.easemob.redpacketsdk.RedPacket;
 
-public class DemoApplication extends Application {
+import cn.ucai.superwechat.widget.SuperwechatHelper;
+
+public class SuperwechatApplication extends Application {
 
 	public static Context applicationContext;
-	private static DemoApplication instance;
+	private static SuperwechatApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
 	
@@ -39,14 +41,14 @@ public class DemoApplication extends Application {
         instance = this;
         
         //init demo helper
-        DemoHelper.getInstance().init(applicationContext);
+		SuperwechatHelper.getInstance().init(applicationContext);
 		//red packet code : 初始化红包上下文，开启日志输出开关
 		RedPacket.getInstance().initContext(applicationContext);
 		RedPacket.getInstance().setDebugMode(true);
 		//end of red packet code
 	}
 
-	public static DemoApplication getInstance() {
+	public static SuperwechatApplication getInstance() {
 		return instance;
 	}
 

@@ -1,4 +1,4 @@
-package cn.ucai.superwechat;
+package cn.ucai.superwechat.widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +25,10 @@ import com.hyphenate.chat.EMMessage.Status;
 import com.hyphenate.chat.EMMessage.Type;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
-import cn.ucai.superwechat.R;
 
-import cn.ucai.superwechat.db.DemoDBManager;
+import cn.ucai.superwechat.widget.SuperwechatModel;
+import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.db.SuperwechatDBManager;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.EmojiconExampleGroupData;
@@ -40,6 +41,7 @@ import cn.ucai.superwechat.ui.MainActivity;
 import cn.ucai.superwechat.ui.VideoCallActivity;
 import cn.ucai.superwechat.ui.VoiceCallActivity;
 import cn.ucai.superwechat.utils.PreferenceManager;
+
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
 import com.hyphenate.easeui.controller.EaseUI.EaseSettingsProvider;
@@ -62,7 +64,7 @@ import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-public class DemoHelper {
+public class SuperwechatHelper {
     /**
      * data sync listener
      */
@@ -89,9 +91,9 @@ public class DemoHelper {
 
 	private UserProfileManager userProManager;
 
-	private static DemoHelper instance = null;
+	private static SuperwechatHelper instance = null;
 	
-	private DemoModel demoModel = null;
+	private SuperwechatModel SuperwechatModel = null;
 	
 	/**
      * sync groups status listener
@@ -129,12 +131,12 @@ public class DemoHelper {
 
     private boolean isGroupAndContactListenerRegisted;
 
-	private DemoHelper() {
+	private SuperwechatHelper() {
 	}
 
-	public synchronized static DemoHelper getInstance() {
+	public synchronized static SuperwechatHelper getInstance() {
 		if (instance == null) {
-			instance = new DemoHelper();
+			instance = new SuperwechatHelper();
 		}
 		return instance;
 	}
@@ -146,7 +148,7 @@ public class DemoHelper {
 	 *            application context
 	 */
 	public void init(Context context) {
-	    demoModel = new DemoModel(context);
+	    SuperwechatModel = new SuperwechatModel(context);
 	    EMOptions options = initChatOptions();
 	    //use default options if options is null
 		if (EaseUI.getInstance().init(context, options)) {
@@ -191,12 +193,12 @@ public class DemoHelper {
         options.setHuaweiPushAppId("10492024");
 
         //set custom servers, commonly used in private deployment
-        if(demoModel.isCustomServerEnable() && demoModel.getRestServer() != null && demoModel.getIMServer() != null) {
-            options.setRestServer(demoModel.getRestServer());
-            options.setIMServer(demoModel.getIMServer());
-            if(demoModel.getIMServer().contains(":")) {
-                options.setIMServer(demoModel.getIMServer().split(":")[0]);
-                options.setImPort(Integer.valueOf(demoModel.getIMServer().split(":")[1]));
+        if(SuperwechatModel.isCustomServerEnable() && SuperwechatModel.getRestServer() != null && SuperwechatModel.getIMServer() != null) {
+            options.setRestServer(SuperwechatModel.getRestServer());
+            options.setIMServer(SuperwechatModel.getIMServer());
+            if(SuperwechatModel.getIMServer().contains(":")) {
+                options.setIMServer(SuperwechatModel.getIMServer().split(":")[0]);
+                options.setImPort(Integer.valueOf(SuperwechatModel.getIMServer().split(":")[1]));
             }
         }
         
@@ -222,25 +224,25 @@ public class DemoHelper {
             
             @Override
             public boolean isSpeakerOpened() {
-                return demoModel.getSettingMsgSpeaker();
+                return SuperwechatModel.getSettingMsgSpeaker();
             }
             
             @Override
             public boolean isMsgVibrateAllowed(EMMessage message) {
-                return demoModel.getSettingMsgVibrate();
+                return SuperwechatModel.getSettingMsgVibrate();
             }
             
             @Override
             public boolean isMsgSoundAllowed(EMMessage message) {
-                return demoModel.getSettingMsgSound();
+                return SuperwechatModel.getSettingMsgSound();
             }
             
             @Override
             public boolean isMsgNotifyAllowed(EMMessage message) {
                 if(message == null){
-                    return demoModel.getSettingMsgNotification();
+                    return SuperwechatModel.getSettingMsgNotification();
                 }
-                if(!demoModel.getSettingMsgNotification()){
+                if(!SuperwechatModel.getSettingMsgNotification()){
                     return false;
                 }else{
                     String chatUsename = null;
@@ -248,10 +250,10 @@ public class DemoHelper {
                     // get user or group id which was blocked to show message notifications
                     if (message.getChatType() == ChatType.Chat) {
                         chatUsename = message.getFrom();
-                        notNotifyIds = demoModel.getDisabledIds();
+                        notNotifyIds = SuperwechatModel.getDisabledIds();
                     } else {
                         chatUsename = message.getTo();
-                        notNotifyIds = demoModel.getDisabledGroups();
+                        notNotifyIds = SuperwechatModel.getDisabledGroups();
                     }
 
                     if (notNotifyIds == null || !notNotifyIds.contains(chatUsename)) {
@@ -364,9 +366,9 @@ public class DemoHelper {
         syncContactsListeners = new ArrayList<DataSyncListener>();
         syncBlackListListeners = new ArrayList<DataSyncListener>();
         
-        isGroupsSyncedWithServer = demoModel.isGroupsSynced();
-        isContactsSyncedWithServer = demoModel.isContactSynced();
-        isBlackListSyncedWithServer = demoModel.isBacklistSynced();
+        isGroupsSyncedWithServer = SuperwechatModel.isGroupsSynced();
+        isContactsSyncedWithServer = SuperwechatModel.isContactSynced();
+        isBlackListSyncedWithServer = SuperwechatModel.isBacklistSynced();
         
         // create the global connection listener
         connectionListener = new EMConnectionListener() {
@@ -614,7 +616,7 @@ public class DemoHelper {
 
         @Override
         public void onContactDeleted(String username) {
-            Map<String, EaseUser> localUsers = DemoHelper.getInstance().getContactList();
+            Map<String, EaseUser> localUsers = SuperwechatHelper.getInstance().getContactList();
             localUsers.remove(username);
             userDao.deleteContact(username);
             inviteMessgeDao.deleteMessage(username);
@@ -839,14 +841,14 @@ public class DemoHelper {
 	    return easeUI.getNotifier();
 	}
 	
-	public DemoModel getModel(){
-        return (DemoModel) demoModel;
+	public SuperwechatModel getModel(){
+        return (SuperwechatModel) SuperwechatModel;
     }
 	
 	/**
 	 * update contact list
 	 * 
-	 * @param contactList
+	 * @param aContactList
 	 */
 	public void setContactList(Map<String, EaseUser> aContactList) {
 		if(aContactList == null){
@@ -864,7 +866,7 @@ public class DemoHelper {
      */
     public void saveContact(EaseUser user){
     	contactList.put(user.getUsername(), user);
-    	demoModel.saveContact(user);
+        SuperwechatModel.saveContact(user);
     }
     
     /**
@@ -874,7 +876,7 @@ public class DemoHelper {
      */
     public Map<String, EaseUser> getContactList() {
         if (isLoggedIn() && contactList == null) {
-            contactList = demoModel.getContactList();
+            contactList = SuperwechatModel.getContactList();
         }
         
         // return a empty non-null object to avoid app crash
@@ -891,7 +893,7 @@ public class DemoHelper {
      */
     public void setCurrentUserName(String username){
     	this.username = username;
-    	demoModel.setCurrentUserName(username);
+        SuperwechatModel.setCurrentUserName(username);
     }
     
     /**
@@ -899,7 +901,7 @@ public class DemoHelper {
      */
     public String getCurrentUsernName(){
     	if(username == null){
-    		username = demoModel.getCurrentUsernName();
+    		username = SuperwechatModel.getCurrentUsernName();
     	}
     	return username;
     }
@@ -910,7 +912,7 @@ public class DemoHelper {
 
 	public Map<String, RobotUser> getRobotList() {
 		if (isLoggedIn() && robotList == null) {
-			robotList = demoModel.getRobotList();
+			robotList = SuperwechatModel.getRobotList();
 		}
 		return robotList;
 	}
@@ -918,7 +920,7 @@ public class DemoHelper {
 	 /**
      * update user list to cache and database
      *
-     * @param contactList
+     * @param contactInfoList
      */
     public void updateContactList(List<EaseUser> contactInfoList) {
          for (EaseUser u : contactInfoList) {
@@ -926,7 +928,7 @@ public class DemoHelper {
          }
          ArrayList<EaseUser> mList = new ArrayList<EaseUser>();
          mList.addAll(contactList.values());
-         demoModel.saveContactList(mList);
+        SuperwechatModel.saveContactList(mList);
     }
 
 	public UserProfileManager getUserProfileManager() {
@@ -1024,7 +1026,7 @@ public class DemoHelper {
                        return;
                    }
                    
-                   demoModel.setGroupsSynced(true);
+                   SuperwechatModel.setGroupsSynced(true);
                    
                    isGroupsSyncedWithServer = true;
                    isSyncingGroupsWithServer = false;
@@ -1036,7 +1038,7 @@ public class DemoHelper {
                        callback.onSuccess();
                    }
                } catch (HyphenateException e) {
-                   demoModel.setGroupsSynced(false);
+                   SuperwechatModel.setGroupsSynced(false);
                    isGroupsSyncedWithServer = false;
                    isSyncingGroupsWithServer = false;
                    noitifyGroupSyncListeners(false);
@@ -1090,7 +1092,7 @@ public class DemoHelper {
                    List<EaseUser> users = new ArrayList<EaseUser>(userlist.values());
                    dao.saveContactList(users);
 
-                   demoModel.setContactSynced(true);
+                   SuperwechatModel.setContactSynced(true);
                    EMLog.d(TAG, "set contact syn status to true");
                    
                    isContactsSyncedWithServer = true;
@@ -1115,7 +1117,7 @@ public class DemoHelper {
                        callback.onSuccess(usernames);
                    }
                } catch (HyphenateException e) {
-                   demoModel.setContactSynced(false);
+                   SuperwechatModel.setContactSynced(false);
                    isContactsSyncedWithServer = false;
                    isSyncingContactsWithServer = false;
                    notifyContactsSyncListener(false);
@@ -1157,7 +1159,7 @@ public class DemoHelper {
                        return;
                    }
                    
-                   demoModel.setBlacklistSynced(true);
+                   SuperwechatModel.setBlacklistSynced(true);
                    
                    isBlackListSyncedWithServer = true;
                    isSyncingBlackListWithServer = false;
@@ -1167,7 +1169,7 @@ public class DemoHelper {
                        callback.onSuccess(usernames);
                    }
                } catch (HyphenateException e) {
-                   demoModel.setBlacklistSynced(false);
+                   SuperwechatModel.setBlacklistSynced(false);
                    
                    isBlackListSyncedWithServer = false;
                    isSyncingBlackListWithServer = true;
@@ -1217,9 +1219,9 @@ public class DemoHelper {
         isSyncingContactsWithServer = false;
         isSyncingBlackListWithServer = false;
         
-        demoModel.setGroupsSynced(false);
-        demoModel.setContactSynced(false);
-        demoModel.setBlacklistSynced(false);
+        SuperwechatModel.setGroupsSynced(false);
+        SuperwechatModel.setContactSynced(false);
+        SuperwechatModel.setBlacklistSynced(false);
         
         isGroupsSyncedWithServer = false;
         isContactsSyncedWithServer = false;
@@ -1230,7 +1232,7 @@ public class DemoHelper {
         setContactList(null);
         setRobotList(null);
         getUserProfileManager().reset();
-        DemoDBManager.getInstance().closeDB();
+        SuperwechatDBManager.getInstance().closeDB();
     }
 
     public void pushActivity(Activity activity) {

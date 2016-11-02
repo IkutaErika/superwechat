@@ -1,4 +1,4 @@
-package cn.ucai.superwechat;
+package cn.ucai.superwechat.widget;
 
 import android.content.Context;
 
@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DemoModel {
+public class SuperwechatModel {
     UserDao dao = null;
     protected Context context = null;
     protected Map<Key,Object> valueCache = new HashMap<Key,Object>();
     
-    public DemoModel(Context ctx){
+    public SuperwechatModel(Context ctx){
         context = ctx;
         PreferenceManager.init(context);
     }

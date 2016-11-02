@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
-import cn.ucai.superwechat.Constant;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 
