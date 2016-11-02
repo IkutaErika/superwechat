@@ -6,9 +6,11 @@ import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 import cn.ucai.superwechat.R;
 
@@ -42,6 +44,9 @@ public class SplashActivity extends BaseActivity {
                     long start = System.currentTimeMillis();
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
+                    UserDao dao =new UserDao(SplashActivity.this);
+                   User user= dao.getUsers(EMClient.getInstance().getCurrentUser());
+                    SuperwechatHelper.getInstance().setCurrentuser(user);
                     long costTime = System.currentTimeMillis() - start;
                     //wait
                     if (sleepTime - costTime > 0) {

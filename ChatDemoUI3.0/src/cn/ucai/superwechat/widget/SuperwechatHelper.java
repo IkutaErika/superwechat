@@ -49,6 +49,7 @@ import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
@@ -126,7 +127,7 @@ public class SuperwechatHelper {
 
     private InviteMessgeDao inviteMessgeDao;
     private UserDao userDao;
-
+    private User currentuser=null;
     private LocalBroadcastManager broadcastManager;
 
     private boolean isGroupAndContactListenerRegisted;
@@ -1243,4 +1244,16 @@ public class SuperwechatHelper {
         easeUI.popActivity(activity);
     }
 
+    public User getCurrentuser() {
+        if (currentuser==null)
+        {
+            String username=EMClient.getInstance().getCurrentUser();
+            currentuser=new User(username);
+        }
+        return currentuser;
+    }
+
+    public void setCurrentuser(User currentuser) {
+        this.currentuser = currentuser;
+    }
 }
