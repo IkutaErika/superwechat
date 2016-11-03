@@ -217,6 +217,7 @@
     <string name="Whether_to_send">Are you sure to send?</string>
     <string name="Open_the_equipment_failure">Open the equipment failure!</string>
     <string name="Confirm_password_cannot_be_empty">Confirm password cannot be empty!</string>
+    <string name="nickname_cannot_be_empty">Nickname cannot be empty!</string>
     <string name="Two_input_password">Inconsistent password, please enter again!</string>
     <string name="Is_the_registered">Registering..</string>
     <string name="Registered_successfully">Registered successfully</string>

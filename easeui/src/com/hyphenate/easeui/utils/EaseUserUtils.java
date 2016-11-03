@@ -10,6 +10,7 @@ import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 
 public class EaseUserUtils {
     
@@ -30,7 +31,14 @@ public class EaseUserUtils {
         
         return null;
     }
-    
+    public static User getAppUserInfo(){
+        if(userProvider != null)
+            return userProvider.getAppUser();
+
+        return null;
+    }
+
+
     /**
      * set user avatar
      * @param username
@@ -53,13 +61,13 @@ public class EaseUserUtils {
     /**
      * set user's nickname
      */
-    public static void setUserNick(String username,TextView textView){
+    public static void setUserNick(String userNick,TextView textView){
         if(textView != null){
-        	EaseUser user = getUserInfo(username);
-        	if(user != null && user.getNick() != null){
-        		textView.setText(user.getNick());
+        	User user = getAppUserInfo();
+        	if(user != null && user.getMUserNick() != null){
+        		textView.setText(user.getMUserNick());
         	}else{
-        		textView.setText(username);
+        		textView.setText(user.getMUserName());
         	}
         }
     }
