@@ -128,6 +128,7 @@ public class SuperwechatHelper {
     private InviteMessgeDao inviteMessgeDao;
     private UserDao userDao;
     private User currentuser=null;
+    private Map<String, User> AppcontactList;
     private LocalBroadcastManager broadcastManager;
 
     private boolean isGroupAndContactListenerRegisted;
@@ -221,7 +222,7 @@ public class SuperwechatHelper {
 
             @Override
             public User getAppUser() {
-                return getCurrentuser();
+                return getAppUserInfo(username);
             }
         });
 
@@ -361,6 +362,19 @@ public class SuperwechatHelper {
                 return intent;
             }
         });
+    }
+
+    private User getAppUserInfo(String username) {
+        // To get instance of EaseUser, here we get it from the user list in memory
+        // You'd better cache it if you get it from your server
+        User user = null;
+        user = getAppContactList().get(username);
+        //if user is not in your contacts, set inital letter for him/her
+        if(user == null){
+            user = new User(username);
+            EaseCommonUtils.setAppUserInitialLetter(user);
+        }
+        return user;
     }
 
     EMConnectionListener connectionListener;
@@ -1260,5 +1274,40 @@ public class SuperwechatHelper {
 
     public void setCurrentuser(User currentuser) {
         this.currentuser = currentuser;
+    }
+    public Map<String, User> getAppContactList() {
+        if (isLoggedIn() && AppcontactList == null) {
+            AppcontactList = SuperwechatModel.getAppContactList();
+        }
+
+        // return a empty non-null object to avoid app crash
+        if(AppcontactList == null){
+            return new Hashtable<String, User>();
+        }
+
+        return AppcontactList;
+    }
+    public void updateAppContactList(List<User> contactInfoList) {
+        for (User u : contactInfoList) {
+            AppcontactList.put(u.getMUserName(), u);
+        }
+        ArrayList<User> mList = new ArrayList<User>();
+        mList.addAll(AppcontactList.values());
+        SuperwechatModel.saveAppContactList(mList);
+    }
+    public void saveAppContact(User user){
+        AppcontactList.put(user.getMUserName(), user);
+        SuperwechatModel.saveAppContact(user);
+    }
+    public void setAppcontactList(Map<String, User> appcontactList) {
+        if (appcontactList==null)
+        {
+            if (AppcontactList!=null)
+            {
+                AppcontactList.clear();
+            }
+            return;
+        }
+        AppcontactList = appcontactList;
     }
 }

@@ -7,6 +7,7 @@ import com.hyphenate.chat.EMClient;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 import cn.ucai.superwechat.utils.PreferenceManager;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class UserProfileManager {
 	private boolean isSyncingContactInfosWithServer = false;
 
 	private EaseUser currentUser;
+	private User currentAppUser;
 
 	public UserProfileManager() {
 	}

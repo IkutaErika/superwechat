@@ -1,5 +1,7 @@
 package com.hyphenate.easeui.domain;
 
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+
 import java.io.Serializable;
 
 /*import cn.ucai.superwechat.utils.UserUtils;*/
@@ -91,7 +93,7 @@ public class User implements Serializable {
 	}
 
 	public String getMAvatarSuffix() {
-		return mavatarSuffix;
+		return mavatarSuffix==null?".jpg":mavatarSuffix;
 	}
 
 	/*public String getInitialLetter() {
@@ -100,6 +102,12 @@ public class User implements Serializable {
 		}
 		return initialLetter;
 	}*/
+	public String getInitialLetter() {
+		if(initialLetter == null){
+			EaseCommonUtils.setAppUserInitialLetter(this);
+		}
+		return initialLetter;
+	}
 
 	public void setInitialLetter(String initialLetter) {
 		this.initialLetter = initialLetter;
@@ -110,5 +118,10 @@ public class User implements Serializable {
 		return "UserAvatar [muserName=" + muserName + ", muserNick=" + muserNick + ", mavatarId=" + mavatarId
 				+ ", mavatarPath=" + mavatarPath + ", mavatarSuffix=" + mavatarSuffix + ", mavatarType=" + mavatarType
 				+ ", mavatarLastUpdateTime=" + mavatarLastUpdateTime + "]";
+	}
+
+	public String getAvatar() {
+String path="http://101.251.196.90:8000/SuperWeChatServerV2.0/downloadAvatar?name_or_hxid="+getMUserName()+"&avatarType="+getMAvatarType()+"&m_avatar_suffix="+getMAvatarSuffix();
+		return path;
 	}
 }
