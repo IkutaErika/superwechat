@@ -7,19 +7,40 @@
     android:background="@color/common_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-<LinearLayout
-    android:id="@+id/layout_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <include layout="@layout/topmenu"/>
-
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/black_deep"
+        >
+        <TextView
+            android:id="@+id/text_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            />
+        <ImageView
+            android:id="@+id/iv_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/em_add"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            />
+    </RelativeLayout>
 
     <cn.ucai.superwechat.widget.MFViewPager
         android:layout_below="@id/layout_title"
         android:id="@+id/layout_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></cn.ucai.superwechat.widget.MFViewPager>
+        android:layout_height="match_parent"
+        android:paddingBottom="48dp"
+        ></cn.ucai.superwechat.widget.MFViewPager>
 <LinearLayout
     android:layout_alignParentBottom="true"
     android:layout_width="match_parent"
@@ -32,8 +53,11 @@
         android:background="@color/black"
         />
     <cn.ucai.superwechat.widget.DMTabHost
+        android:id="@+id/layout_host"
         android:layout_width="match_parent"
-        android:layout_height="47dp">
+        android:layout_height="47dp"
+        android:paddingBottom="1dp"
+        >
         <cn.ucai.superwechat.widget.DMTabButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
