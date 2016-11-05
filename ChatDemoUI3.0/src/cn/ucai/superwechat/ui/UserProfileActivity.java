@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -32,8 +33,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener {
@@ -47,7 +53,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     @Bind(R.id.tv_username_profile)
     TextView tvUsernameProfile;
     private ProgressDialog dialog;
-
+    User user=null;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -56,6 +62,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         ButterKnife.bind(this);
         initView();
         initListener();
+        user=EaseUserUtils.getCurrentAppUserInfo();
     }
 
     private void initView() {
@@ -173,6 +180,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                         }
                     });
                 } else {
+                    updateAppNick(nickName);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -185,6 +193,50 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 }
             }
         }).start();
+    }
+
+    private void updateAppNick(String nickName) {
+        NetDao.updateNickname(this, user.getMUserName(), user.getMUserNick(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (result!=null)
+                {
+                    Result r=ResultUtils.getResultFromJson(result,User.class);
+                    if (r!=null&&r.isRetMsg())
+                    {
+                        User u = (User) r.getRetData();
+                       updatelocalUser(u);
+                    }
+                    else {
+                        Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
+                                .show();
+                        dialog.dismiss();
+
+                    }
+
+                }else {
+                    Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
+                            .show();
+                    dialog.dismiss();
+
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                L.e(error);
+                Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatenick_fail), Toast.LENGTH_SHORT)
+                        .show();
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    private void updatelocalUser(User u) {
+        user=u;
+       SuperwechatHelper.getInstance().saveAppContact(u);
+       EaseUserUtils.setCurrentAppUserNick(tvNicknameProfile);
     }
 
     @Override
@@ -282,15 +334,20 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 break;
             case R.id.layout_usernick:
                 final EditText editText = new EditText(this);
+                editText.setText(user.getMUserNick());
                 new Builder(this).setTitle(R.string.setting_nickname).setIcon(android.R.drawable.ic_dialog_info).setView(editText)
                         .setPositiveButton(R.string.dl_ok, new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String nickString = editText.getText().toString();
+                                String nickString = editText.getText().toString().trim();
                                 if (TextUtils.isEmpty(nickString)) {
                                     Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
                                     return;
+                                }
+                                if (nickString.equals(user.getMUserNick()))
+                                {
+                                    CommonUtils.showShortToast(getString(R.string.nickname_cannot_be_same));
                                 }
                                 updateRemoteNick(nickString);
                             }
@@ -301,4 +358,5 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 break;
         }
     }
+
 }

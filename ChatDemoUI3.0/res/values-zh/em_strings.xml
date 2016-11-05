@@ -330,7 +330,8 @@
     <string name="group_nick">聊天室名称:</string>
     <string name="group_owner">群主：</string>
     <string name="user_removed_from_group">你已经被移除群</string>
-    
+    <string name="nickname_cannot_be_same">昵称不能和原来的相同！</string>
+
     <string name="network_unstable">网络不稳定</string>
     <string name="no_call_data">没有通话数据</string>
 

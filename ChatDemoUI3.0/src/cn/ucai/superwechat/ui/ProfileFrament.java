@@ -84,4 +84,10 @@ public class ProfileFrament extends Fragment {
                 break;
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUserInfo();
+    }
 }

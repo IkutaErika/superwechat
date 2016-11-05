@@ -54,12 +54,12 @@ public class NetDao {
                 .execute(onCompleteListener);
     }
 
-    public static void updateNickname(Context context,String muserName, String muserNick,OkHttpUtils.OnCompleteListener<Result> listener) {
-        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
+    public static void updateNickname(Context context,String muserName, String muserNick,OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(context);
         utils.url(I.SERVER_ROOT+I.REQUEST_UPDATE_USER_NICK)
                 .addParam(I.User.USER_NAME,muserName)
                 .addParam(I.User.NICK,muserNick)
-                .targetClass(Result.class)
+                .targetClass(String.class)
                 .execute(listener);
 
     }

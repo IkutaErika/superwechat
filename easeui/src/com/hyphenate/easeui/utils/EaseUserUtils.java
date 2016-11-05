@@ -130,4 +130,11 @@ public class EaseUserUtils {
         String username=EMClient.getInstance().getCurrentUser();
         tvUsernameProfile.setText(username);
     }
+
+    public static User getCurrentAppUserInfo() {
+        String username=EMClient.getInstance().getCurrentUser();
+       if (userProvider!=null)
+       return userProvider.getAppUser();
+        return null;
+    }
 }
