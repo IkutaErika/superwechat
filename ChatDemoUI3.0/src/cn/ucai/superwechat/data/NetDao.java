@@ -66,6 +66,7 @@ public class NetDao {
 
     public static void updateAvatar(Context context, String muserName, File file, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
         OkHttpUtils<String> utils=new OkHttpUtils<>(context);
+
         utils.url(I.SERVER_ROOT+I.REQUEST_UPDATE_AVATAR)
              .addParam(I.NAME_OR_HXID,muserName)
              .addParam(I.AVATAR_TYPE,"user_avatar")
@@ -73,6 +74,7 @@ public class NetDao {
              .post()
             .targetClass(String.class)
             .execute(onCompleteListener);
+
    }
 
 }
