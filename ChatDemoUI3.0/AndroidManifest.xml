@@ -79,6 +79,7 @@
             android:name="cn.ucai.superwechat.ui.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateVisible" />
 
         <!-- 注册 -->
@@ -268,6 +269,10 @@
             android:theme="@style/horizontal_slide" />
         <activity
             android:name="cn.ucai.superwechat.ui.SetServersActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
+        <activity
+            android:name="cn.ucai.superwechat.ui.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
 

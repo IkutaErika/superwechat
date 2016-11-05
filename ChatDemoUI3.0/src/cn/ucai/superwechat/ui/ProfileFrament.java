@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.utils.MFGT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +78,7 @@ public class ProfileFrament extends Fragment {
                 break;
 
             case R.id.tv_profile_settings:
+                MFGT.startActivity(getActivity(),SettingsActivity.class);
                 break;
         }
     }
