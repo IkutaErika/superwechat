@@ -125,4 +125,9 @@ public class EaseUserUtils {
         tvProfileUsername.setText("微信号："+username);
 
     }
+
+    public static void setCurrentAppUserName(TextView tvUsernameProfile) {
+        String username=EMClient.getInstance().getCurrentUser();
+        tvUsernameProfile.setText(username);
+    }
 }

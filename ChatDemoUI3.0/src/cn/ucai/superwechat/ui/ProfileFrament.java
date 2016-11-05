@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.easemob.redpacketui.utils.RedPacketUtil;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import butterknife.Bind;
@@ -70,6 +71,7 @@ public class ProfileFrament extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_profile_view:
+                MFGT.startActivity(getActivity(),UserProfileActivity.class);
                 break;
             case R.id.tv_profile_money:
                 //red packet code : 进入零钱页面
