@@ -25,8 +25,10 @@ import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseImageUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+import com.hyphenate.util.EasyUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,7 +54,8 @@ import cn.ucai.superwechat.widget.SuperwechatHelper;
 public class UserProfileActivity extends BaseActivity implements OnClickListener {
 
     private static final int REQUESTCODE_PICK = 1;
-    private static final int REQUESTCODE_CUTTING = 2;
+    private static final int
+            REQUESTCODE_CUTTING = 2;
     @Bind(R.id.iv_user_profile)
     ImageView ivUserProfile;
     @Bind(R.id.tv_nickname_profile)
@@ -69,7 +72,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         ButterKnife.bind(this);
         initView();
         initListener();
-        user=EaseUserUtils.getCurrentAppUserInfo();
+        user=EaseUserUtils.getCurrentAppUserInfo(EMClient.getInstance().getCurrentUser());
     }
 
     private void initView() {
@@ -82,7 +85,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void initListener() {
-       EaseUserUtils.setCurrentAppUserAvatar(this,ivUserProfile);
+        EaseUserUtils.setCurrentAppUserAvatar(this,ivUserProfile);
         EaseUserUtils.setCurrentAppUserNick(tvNicknameProfile);
         EaseUserUtils.setCurrentAppUserName(tvUsernameProfile);
     }
@@ -203,7 +206,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void updateAppNick(String nickName) {
-        NetDao.updateNickname(this, user.getMUserName(), user.getMUserNick(), new OkHttpUtils.OnCompleteListener<String>() {
+        NetDao.updateNickname(this, user.getMUserName(),nickName, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String result) {
                 if (result!=null)
@@ -279,6 +282,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                     Result result=ResultUtils.getResultFromJson(s,User.class);
                     if (result!=null&&result.isRetMsg())
                     {
+                      User u = (User) result.getRetData();
+                      SuperwechatHelper.getInstance().saveAppContact(u);
                         setPicToView(Picdata);
                     }
                     else {
@@ -324,7 +329,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
             Bitmap photo = extras.getParcelable("data");
             Drawable drawable = new BitmapDrawable(getResources(), photo);
             ivUserProfile.setImageDrawable(drawable);
-            uploadUserAvatar(Bitmap2Bytes(photo));
+            dialog.dismiss();
+            Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success),
+                        Toast.LENGTH_SHORT).show();
+        //    uploadUserAvatar(Bitmap2Bytes(photo));
         }
 
     }
@@ -370,7 +378,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                 MFGT.finish(this);
                 break;
             case R.id.layout_ivinfo:
-                user.getAvatar();
                 uploadHeadPhoto();
                 break;
             case R.id.layout_usernick:
@@ -404,8 +411,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         if (extra!=null)
         {
             Bitmap bitmap= extra.getParcelable("data");
-            String imagepath=EaseImageUtils.getImagePath(user.getMUserName()+ I.AVATAR_SUFFIX_PNG);
-            L.e("???????"+imagepath);
+            String imagepath=EaseImageUtils.getImagePath(user.getMUserName()+ I.AVATAR_SUFFIX_JPG);
             File file=new File(imagepath);//要保存的图片路径
             try {
                 BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(file));

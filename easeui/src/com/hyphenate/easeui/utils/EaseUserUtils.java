@@ -2,9 +2,11 @@ package com.hyphenate.easeui.utils;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.platform.comapi.map.L;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMClient;
@@ -33,13 +35,6 @@ public class EaseUserUtils {
         
         return null;
     }
-    public static User getAppUserInfo(){
-        if(userProvider != null)
-            return userProvider.getAppUser();
-
-        return null;
-    }
-
 
     /**
      * set user avatar
@@ -78,7 +73,7 @@ public class EaseUserUtils {
      * @param username
      */
     public static void setAppUserAvatar(Context context, String username, ImageView imageView){
-        User user = getAppUserInfo();
+        User user = getCurrentAppUserInfo(username);
         if(user != null && user.getAvatar() != null){
             try {
                 int avatarResId = Integer.parseInt(user.getAvatar());
@@ -95,13 +90,13 @@ public class EaseUserUtils {
     /**
      * set user's nickname
      */
-    public static void setAppUserNick(String userNick,TextView textView){
+    public static void setAppUserNick(String username,TextView textView){
         if(textView != null){
-            User user = getAppUserInfo();
+            User user = getCurrentAppUserInfo(username);
             if(user != null && user.getMUserNick() != null){
                 textView.setText(user.getMUserNick());
             }else{
-                textView.setText(userNick);
+                textView.setText(username);
             }
         }
     }
@@ -123,7 +118,6 @@ public class EaseUserUtils {
 
     private static void setAppUserName(String username, TextView tvProfileUsername) {
         tvProfileUsername.setText("微信号："+username);
-
     }
 
     public static void setCurrentAppUserName(TextView tvUsernameProfile) {
@@ -131,10 +125,9 @@ public class EaseUserUtils {
         tvUsernameProfile.setText(username);
     }
 
-    public static User getCurrentAppUserInfo() {
-        String username=EMClient.getInstance().getCurrentUser();
+    public static User getCurrentAppUserInfo(String username) {
        if (userProvider!=null)
-       return userProvider.getAppUser();
+       return userProvider.getAppUser(username);
         return null;
     }
 }

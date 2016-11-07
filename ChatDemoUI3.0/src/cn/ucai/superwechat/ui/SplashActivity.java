@@ -11,6 +11,7 @@ import com.hyphenate.easeui.domain.User;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.superwechat.db.UserDao;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 import cn.ucai.superwechat.R;
 

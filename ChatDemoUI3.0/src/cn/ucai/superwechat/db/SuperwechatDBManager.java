@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.widget.Constant;
 import cn.ucai.superwechat.widget.SuperwechatApplication;
 import cn.ucai.superwechat.domain.InviteMessage;
@@ -477,10 +478,11 @@ public class SuperwechatDBManager {
 
     synchronized public void saveAppContact(User user){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        L.e("DBManager:saveAppContact"+user.toString());
         ContentValues values = new ContentValues();
         values.put(UserDao.USER_COLUMN_NAME, user.getMUserName());
         if(user.getMUserNick() != null)
-            values.put(UserDao.COLUMN_NAME_NICK, user.getMUserNick());
+            values.put(UserDao.USER_COLUMN_NICK, user.getMUserNick());
         if(user.getMAvatarId() != null)
             values.put(UserDao.USER_COLUMN_AVATAR_ID, user.getMAvatarId());
         if(user.getMAvatarType() != null)
@@ -494,5 +496,6 @@ public class SuperwechatDBManager {
         if(db.isOpen()){
             db.replace(UserDao.USER_TABLE_NAME, null, values);
         }
+
     }
 }
