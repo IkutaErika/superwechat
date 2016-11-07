@@ -11,8 +11,10 @@ import com.hyphenate.easeui.widget.EaseTitleBar;
 
 public class SetServersActivity extends BaseActivity {
 
+/*
     EditText restEdit;
     EditText imEdit;
+*/
     EaseTitleBar titleBar;
 
     SuperwechatModel superwechatModel;
@@ -22,16 +24,16 @@ public class SetServersActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_servers);
 
-        restEdit = (EditText) findViewById(R.id.et_rest);
-        imEdit = (EditText) findViewById(R.id.et_im);
+     //   restEdit = (EditText) findViewById(R.id.et_rest);
+    //    imEdit = (EditText) findViewById(R.id.et_im);
         titleBar = (EaseTitleBar) findViewById(R.id.title_bar);
 
         superwechatModel = new SuperwechatModel(this);
-        if(superwechatModel.getRestServer() != null)
+   /*     if(superwechatModel.getRestServer() != null)
             restEdit.setText(superwechatModel.getRestServer());
         if(superwechatModel.getIMServer() != null)
             imEdit.setText(superwechatModel.getIMServer());
-        titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
+     */   titleBar.setLeftLayoutClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -42,10 +44,10 @@ public class SetServersActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(!TextUtils.isEmpty(restEdit.getText()))
+       /* if(!TextUtils.isEmpty(restEdit.getText()))
             superwechatModel.setRestServer(restEdit.getText().toString());
         if(!TextUtils.isEmpty(imEdit.getText()))
             superwechatModel.setIMServer(imEdit.getText().toString());
-        super.onBackPressed();
+     */   super.onBackPressed();
     }
 }

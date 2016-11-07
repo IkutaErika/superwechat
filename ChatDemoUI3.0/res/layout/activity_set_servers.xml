@@ -10,22 +10,20 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#232325"
         app:titleBarLeftImage="@drawable/ease_mm_title_back" />
+<include layout="@layout/ease_search_bar_with_padding" android:id="@+id/search_bar_view"/>
+  <FrameLayout
+      android:id="@+id/cotent_container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <com.hyphenate.easeui.widget.EaseContactList
+          android:id="@+id/contact_list"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_rest"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="rest server"
-        />
+      </com.hyphenate.easeui.widget.EaseContactList>
 
-    <EditText
-        android:id="@+id/et_im"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="im server"
-        />
+  </FrameLayout>
 
 </LinearLayout>

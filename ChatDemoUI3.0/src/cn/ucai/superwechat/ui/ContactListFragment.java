@@ -107,6 +107,8 @@ public class ContactListFragment extends EaseContactListFragment {
                 NetUtils.hasDataConnection(getActivity());
             }
         });
+        titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        titleBar.setVisibility(View.GONE);
         //设置联系人数据
         Map<String, EaseUser> m = SuperwechatHelper.getInstance().getContactList();
         if (m instanceof Hashtable<?, ?>) {
