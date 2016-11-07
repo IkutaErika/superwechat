@@ -203,6 +203,7 @@
     <string name="Add_a_button_was_clicked">添加按钮被点击</string>
     <string name="not_delete_myself">不能删除自己</string>
     <string name="Are_removed">正在移除...</string>
+    <string name="failed_to_search" >没有找到此用户!</string>
     <string name="confirm_the_members">确认将此成员加入至此群黑名单?</string>
     <string name="Failed_to_get_group_chat_information">获取群聊信息失败:</string>
     <string name="Is_sending_a_request">正在发送请求...</string>

@@ -130,4 +130,15 @@ public class EaseUserUtils {
        return userProvider.getAppUser(username);
         return null;
     }
+    public static void setCurrentAppUserAvatar(FragmentActivity activity,String username, ImageView iv) {
+        setAppUserAvatar(activity,username,iv);
+    }
+
+    public static void setCurrentAppUserNick(String nickname,TextView tvProfileNickname) {
+        setAppUserNick(nickname,tvProfileNickname);
+    }
+
+    public static void setCurrentAppUserNameWithNo(String username,TextView tvProfileUsername) {
+        setAppUserName(username,tvProfileUsername);
+    }
 }
