@@ -31,6 +31,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,8 +60,11 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.adapter.MainTabAdpter;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.db.UserDao;
+import cn.ucai.superwechat.dialog.TitleMenu.ActionItem;
+import cn.ucai.superwechat.dialog.TitleMenu.TitlePopup;
 import cn.ucai.superwechat.runtimepermissions.PermissionsManager;
 import cn.ucai.superwechat.runtimepermissions.PermissionsResultAction;
+import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.widget.Constant;
 import cn.ucai.superwechat.widget.DMTabHost;
 import cn.ucai.superwechat.widget.MFViewPager;
@@ -93,7 +97,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     // user account was removed
     private boolean isCurrentAccountRemoved = false;
   MainTabAdpter tabAdpter;
-
+ TitlePopup popup;
     /**
      * check if current user account was remove
      */
@@ -217,9 +221,30 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         layoutHost.setChecked(0);
         layoutHost.setOnCheckedChangeListener(this);
         layoutViewpager.setOnPageChangeListener(this);
+        popup=new TitlePopup(this, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+         popup.addAction(new ActionItem(this,R.string.menu_groupchat, R.drawable.icon_menu_group));
+         popup.addAction(new ActionItem(this,R.string.menu_addfriend, R.drawable.icon_menu_addfriend));
+         popup.addAction(new ActionItem(this,R.string.menu_qrcode, R.drawable.icon_menu_sao));
+         popup.addAction(new ActionItem(this,R.string.menu_money, R.drawable.icon_menu_money));
+         popup.setItemOnClickListener(onItemOnClickListener);
+    }
+TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnClickListener() {
+    @Override
+    public void onItemClick(ActionItem item, int position) {
+       switch (position){
+           case 0:
+               break;
+           case 1:
+               MFGT.startActivity(MainActivity.this,AddContactActivity.class);
+               break;
+           case 2:
+               break;
+           case 3:
+               break;
+       }
 
     }
-
+};
     /**
      * on tab clicked
      *
@@ -355,6 +380,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
             case R.id.text_right:
                 break;
             case R.id.iv_add:
+                popup.show(findViewById(R.id.layout_title));
                 break;
         }
     }
