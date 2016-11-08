@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hyphenate.easeui.utils.EaseUserUtils;
+
 import cn.ucai.superwechat.R;
 
 public class ContactItemView extends LinearLayout{
@@ -31,7 +33,6 @@ public class ContactItemView extends LinearLayout{
         String name = ta.getString(R.styleable.ContactItemView_contactItemName);
         Drawable image = ta.getDrawable(R.styleable.ContactItemView_contactItemImage);
         ta.recycle();
-        
         LayoutInflater.from(context).inflate(R.layout.em_widget_contact_item, this);
         ImageView avatar = (ImageView) findViewById(R.id.avatar);
         unreadMsgView = (TextView) findViewById(R.id.unread_msg_number);

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.util.EMLog;
 
@@ -65,7 +66,6 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        
         EaseUser user = getItem(position);
         if(user == null)
             Log.d("ContactAdapter", position + "");
@@ -81,11 +81,8 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         } else {
             holder.headerView.setVisibility(View.GONE);
         }
-          
-        EaseUserUtils.setCurrentAppUserNick(username, holder.nameView);
-        EaseUserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
-        
-       
+        EaseUserUtils.setAppUserAvatar(getContext(), user.getUsername(), holder.avatar);
+        EaseUserUtils.setCurrentAppUserNick(user.getUsername(), holder.nameView);
         if(primaryColor != 0)
             holder.nameView.setTextColor(primaryColor);
         if(primarySize != 0)

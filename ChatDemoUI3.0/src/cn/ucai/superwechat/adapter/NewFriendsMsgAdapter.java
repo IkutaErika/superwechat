@@ -16,6 +16,7 @@ package cn.ucai.superwechat.adapter;
 import java.util.List;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
@@ -26,6 +27,7 @@ import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.domain.InviteMessage;
 import cn.ucai.superwechat.utils.ResultUtils;
+import cn.ucai.superwechat.widget.SuperwechatHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

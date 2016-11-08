@@ -164,11 +164,13 @@ public class UserProfileManager {
 	}
 	private void setCurrentUserNick(String nickname) {
 		getCurrentUserInfo().setNick(nickname);
+		currentUser.setNick(nickname);
 		PreferenceManager.getInstance().setCurrentUserNick(nickname);
 	}
 
 	private void setCurrentUserAvatar(String avatar) {
 		getCurrentUserInfo().setAvatar(avatar);
+		currentUser.setAvatar(avatar);
 		PreferenceManager.getInstance().setCurrentUserAvatar(avatar);
 	}
 

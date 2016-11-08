@@ -16,10 +16,12 @@ import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EaseUserUtils {
     
     static EaseUserProfileProvider userProvider;
-    
     static {
         userProvider = EaseUI.getInstance().getUserProfileProvider();
     }
@@ -35,6 +37,8 @@ public class EaseUserUtils {
         
         return null;
     }
+
+
 
     /**
      * set user avatar
@@ -68,6 +72,7 @@ public class EaseUserUtils {
         	}
         }
     }
+
     /**
      * set user avatar
      * @param username
@@ -91,6 +96,7 @@ public class EaseUserUtils {
      * set user's nickname
      */
     public static void setAppUserNick(String username,TextView textView){
+        Log.i("superwechat","setAppUserNick::"+getCurrentAppUserInfo(username).toString());
         if(textView != null){
             User user = getCurrentAppUserInfo(username);
             if(user != null && user.getMUserNick() != null){

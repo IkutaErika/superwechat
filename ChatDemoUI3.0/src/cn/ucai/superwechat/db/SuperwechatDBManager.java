@@ -222,7 +222,7 @@ public class SuperwechatDBManager {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         List<InviteMessage> msgs = new ArrayList<InviteMessage>();
         if(db.isOpen()){
-            Cursor cursor = db.rawQuery("select * from " + InviteMessgeDao.TABLE_NAME + " desc",null);
+            Cursor cursor = db.rawQuery("select * from " + InviteMessgeDao.TABLE_NAME + " order by "+InviteMessgeDao.COLUMN_NAME_TIME +" desc",null);
             while(cursor.moveToNext()){
                 InviteMessage msg = new InviteMessage();
                 int id = cursor.getInt(cursor.getColumnIndex(InviteMessgeDao.COLUMN_NAME_ID));
@@ -478,7 +478,6 @@ public class SuperwechatDBManager {
 
     synchronized public void saveAppContact(User user){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        L.e("DBManager:saveAppContact"+user.toString());
         ContentValues values = new ContentValues();
         values.put(UserDao.USER_COLUMN_NAME, user.getMUserName());
         if(user.getMUserNick() != null)

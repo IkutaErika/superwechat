@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 
@@ -181,6 +182,10 @@ public class LoginActivity extends BaseActivity {
                      User user= (User) result.getRetData();
                         if (user!=null){
                             UserDao dao=new UserDao(LoginActivity.this);
+                            EaseUser euser=new EaseUser(user.getMUserName());
+                            euser.setAvatar(user.getAvatar());
+                            euser.setNickname(user.getMUserNick());
+                            dao.saveContact(euser);
                             dao.saveUsers(user);
                             SuperwechatHelper.getInstance().setCurrentuser(user);
                             LoginSuccess();

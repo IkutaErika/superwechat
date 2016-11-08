@@ -13,6 +13,8 @@
  */
 package com.hyphenate.easeui.domain;
 
+import android.util.Log;
+
 import com.hyphenate.chat.EMContact;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 
@@ -68,4 +70,5 @@ public class EaseUser extends EMContact {
 	public String toString() {
 		return nick == null ? username : nick;
 	}
+
 }

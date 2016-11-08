@@ -2,16 +2,22 @@ package cn.ucai.superwechat.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 import cn.ucai.superwechat.R;
 
