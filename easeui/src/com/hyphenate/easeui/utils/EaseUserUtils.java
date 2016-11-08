@@ -100,7 +100,19 @@ public class EaseUserUtils {
             }
         }
     }
-
+    public static void setAppUserAvatar(Context context, User user, ImageView imageView){
+        if(user != null && user.getAvatar() != null){
+            try {
+                int avatarResId = Integer.parseInt(user.getAvatar());
+                Glide.with(context).load(avatarResId).into(imageView);
+            } catch (Exception e) {
+                //use default avatar
+                Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.default_hd_avatar).into(imageView);
+            }
+        }else{
+            Glide.with(context).load(R.drawable.default_hd_avatar).into(imageView);
+        }
+    }
     public static void setCurrentAppUserAvatar(FragmentActivity activity, ImageView iv) {
         String username= EMClient.getInstance().getCurrentUser();
         setAppUserAvatar(activity,username,iv);
@@ -125,13 +137,13 @@ public class EaseUserUtils {
         tvUsernameProfile.setText(username);
     }
 
-    public static User getCurrentAppUserInfo(String username) {
+    public static User getCurrentAppUserInfo(  String username) {
        if (userProvider!=null)
        return userProvider.getAppUser(username);
         return null;
     }
-    public static void setCurrentAppUserAvatar(FragmentActivity activity,String username, ImageView iv) {
-        setAppUserAvatar(activity,username,iv);
+    public static void setCurrentAppUserAvatar(FragmentActivity activity,User user, ImageView iv) {
+        setAppUserAvatar(activity,user,iv);
     }
 
     public static void setCurrentAppUserNick(String nickname,TextView tvProfileNickname) {

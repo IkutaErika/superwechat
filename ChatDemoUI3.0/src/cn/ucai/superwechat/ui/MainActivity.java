@@ -79,11 +79,11 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
     // textview for unread event message
     private TextView unreadAddressLable;
 
-    private Button[] mTabs;
+    private Button[] mTabs; */
     private ContactListFragment contactListFragment;
-    private Fragment[] fragments;*/
-/*	private int index;
-    private int currentTabIndex;*/
+    /*   private Fragment[] fragments;
+       private int index;
+      */ private int currentTabIndex;
     // user logged into another device
     public boolean isConflict = false;
     @Bind(R.id.text_right)
@@ -122,8 +122,8 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         inviteMessgeDao = new InviteMessgeDao(this);
         UserDao userDao = new UserDao(this);
     /*	conversationListFragment = new ConversationListFragment();
-        contactListFragment = new ContactListFragment();
-		SettingsFragment settingFragment = new SettingsFragment();
+     */   contactListFragment = new ContactListFragment();
+	    /*		SettingsFragment settingFragment = new SettingsFragment();
 		fragments = new Fragment[] { conversationListFragment, contactListFragment, settingFragment};
 
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, conversationListFragment)
@@ -214,10 +214,11 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         tabAdpter.clear();
 
         tabAdpter.addFragment(new ConversationListFragment(),getString(R.string.app_name));
-        tabAdpter.addFragment(new ContactListFragment(),getString(R.string.contacts));
+        tabAdpter.addFragment(contactListFragment,getString(R.string.contacts));
         tabAdpter.addFragment(new DiscoverFragment(),getString(R.string.discover));
         tabAdpter.addFragment(new ProfileFrament(),getString(R.string.me));
         tabAdpter.notifyDataSetChanged();
+        currentTabIndex=0;
         layoutHost.setChecked(0);
         layoutHost.setOnCheckedChangeListener(this);
         layoutViewpager.setOnPageChangeListener(this);
@@ -351,11 +352,12 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
                     if (conversationListFragment != null) {
                         conversationListFragment.refresh();
                     }
-                } else if (currentTabIndex == 1) {
+                } else
+              */  if (currentTabIndex == 1) {
                     if(contactListFragment != null) {
                         contactListFragment.refresh();
                     }
-                }*/
+                }
                 String action = intent.getAction();
                 if (action.equals(Constant.ACTION_GROUP_CHANAGED)) {
                     if (EaseCommonUtils.getTopActivity(MainActivity.this).equals(GroupsActivity.class.getName())) {
@@ -387,6 +389,7 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
 
     @Override
     public void onCheckedChange(int checkedPosition, boolean byUser) {
+        currentTabIndex=checkedPosition;
         layoutViewpager.setCurrentItem(checkedPosition,false);
     }
 
@@ -397,6 +400,7 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
 
     @Override
     public void onPageSelected(int position) {
+        currentTabIndex=position;
         layoutHost.setChecked(position);
         layoutViewpager.setCurrentItem(position);
     }
@@ -480,11 +484,11 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
         runOnUiThread(new Runnable() {
             public void run() {
                 int count = getUnreadAddressCountTotal();
-		/*		if (count > 0) {
-					unreadAddressLable.setVisibility(View.VISIBLE);
-				} else {
-					unreadAddressLable.setVisibility(View.INVISIBLE);
-				}*/
+                if (count > 0) {
+                    layoutHost.setHasNew(1,true);
+                } else {
+                    layoutHost.setHasNew(1,false);
+                }
             }
         });
 

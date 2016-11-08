@@ -14,118 +14,106 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0.3dp"
-                android:background="@color/black3"
-                />
             <RelativeLayout
+                android:id="@+id/layout_profile_view"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_ivinfo"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/setting_item_selector"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="头像"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_centerVertical="true"
-                    style="@style/TextAppearance.AppCompat.Button"
-                    />
-                <ImageView
-                    android:id="@+id/iv_user_profile"
-                    android:layout_width="60dip"
-                    android:layout_height="60dip"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/default_hd_avatar"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/layout_usernick"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/setting_item_selector"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="昵称"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_centerVertical="true"
-                    style="@style/TextAppearance.AppCompat.Button"
-                    />
-                <TextView
-                    android:id="@+id/tv_nickname_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:text="未设置"
-                    android:textColor="@color/gray"
-                    android:src="@drawable/default_hd_avatar"
-                    />
-            </RelativeLayout>
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.3dp"
                 android:background="@color/black3"
                 />
-            <RelativeLayout
-                android:layout_width="fill_parent"
+            <ImageView
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:id="@+id/iv_profile_avatar"
+                android:src="@drawable/default_hd_avatar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/layout_username"
+                android:id="@+id/tv_profile_nickname"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_profile_avatar"
+                android:textSize="18sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_profile_username"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/setting_item_selector"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="微信号"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_centerVertical="true"
-                    style="@style/TextAppearance.AppCompat.Button"
-                    />
-                <TextView
-                    android:id="@+id/tv_username_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:text="未设置"
-                    android:textColor="@color/gray"
-                    android:src="@drawable/default_hd_avatar"
-                    />
-            </RelativeLayout>
+                android:layout_below="@id/tv_profile_nickname"
+                android:layout_toRightOf="@id/iv_profile_avatar"
+                android:textSize="12sp"
+                />
+           </RelativeLayout>
             <View
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="0.3dp"
-
+                android:background="@color/black3"
                 />
             <Button
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/btn_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/setting_item_selector"
                 android:text="设置备注及标签"
                 />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/btn_Add_contacts"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:background="@color/btn_green_noraml"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:text="@string/userinfo_btn_add_contact"
+                android:textColor="@android:color/primary_text_dark"
+                android:textSize="18sp"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/btn_sendmessage"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:background="@color/btn_green_noraml"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:text="@string/userinfo_btn_send_msg"
+                android:textColor="@android:color/primary_text_dark"
+                android:textSize="18sp"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/btn_sendvideo"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:background="@color/text_red_color"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:text="@string/userinfo_btn_send_video"
+                android:textColor="@android:color/primary_text_dark"
+                android:textSize="18sp"
+                />
         </LinearLayout>
-
     </ScrollView>
 
 
