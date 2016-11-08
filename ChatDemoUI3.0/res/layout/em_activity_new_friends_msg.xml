@@ -9,10 +9,17 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@color/black_deep"
         android:gravity="center_vertical" >
 
-        <include layout="@layout/ease_commom_back_btn" />
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rp_back_arrow_blue"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -22,7 +29,6 @@
             android:textColor="#fff"
             android:textSize="18sp" />
     </RelativeLayout>
-
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -32,6 +38,6 @@
         android:divider="#D4D4D4"
         android:dividerHeight="1px"
         android:cacheColorHint="#00000000"
-        android:fastScrollEnabled="true" />
+        />
 
 </LinearLayout>

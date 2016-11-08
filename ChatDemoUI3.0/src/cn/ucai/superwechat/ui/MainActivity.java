@@ -114,6 +114,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         ButterKnife.bind(this);
         // runtime permission for android 6.0, just require all permissions here for simple
         requestPermissions();
+        contactListFragment = new ContactListFragment();
         initView();
         uMeng();
         CheckedAccount();
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         inviteMessgeDao = new InviteMessgeDao(this);
         UserDao userDao = new UserDao(this);
     /*	conversationListFragment = new ConversationListFragment();
-     */   contactListFragment = new ContactListFragment();
+     */
 	    /*		SettingsFragment settingFragment = new SettingsFragment();
 		fragments = new Fragment[] { conversationListFragment, contactListFragment, settingFragment};
 

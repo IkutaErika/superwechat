@@ -208,6 +208,7 @@
     <string name="Failed_to_get_group_chat_information">获取群聊信息失败:</string>
     <string name="Is_sending_a_request">正在发送请求...</string>
     <string name="Request_to_join">请求加入</string>
+    <string name="new_friend" >新朋友</string>
     <string name="send_the_request_is">发送请求成功，等待群主同意</string>
     <string name="Join_the_group_chat">加入群聊成功</string>
     <string name="Failed_to_join_the_group_chat">加入群聊失败:</string>

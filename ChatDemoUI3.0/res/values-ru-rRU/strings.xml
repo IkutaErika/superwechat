@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="failed_to_search" />
+    <string name="new_friend" >new_friend</string>
 </resources>

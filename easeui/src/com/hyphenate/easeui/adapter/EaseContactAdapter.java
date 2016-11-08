@@ -71,7 +71,6 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             Log.d("ContactAdapter", position + "");
         String username = user.getUsername();
         String header = user.getInitialLetter();
-        
         if (position == 0 || header != null && !header.equals(getItem(position - 1).getInitialLetter())) {
             if (TextUtils.isEmpty(header)) {
                 holder.headerView.setVisibility(View.GONE);
@@ -82,9 +81,9 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         } else {
             holder.headerView.setVisibility(View.GONE);
         }
-
-        EaseUserUtils.setUserNick(username, holder.nameView);
-        EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
+          
+        EaseUserUtils.setCurrentAppUserNick(username, holder.nameView);
+        EaseUserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
         
        
         if(primaryColor != 0)
