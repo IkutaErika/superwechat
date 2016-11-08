@@ -29,6 +29,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.SuperwechatModel;
@@ -663,10 +664,35 @@ public class SuperwechatHelper {
         }
 
         @Override
-        public void onContactDeleted(String username) {
-            Map<String, EaseUser> localUsers = SuperwechatHelper.getInstance().getContactList();
+        public void onContactDeleted(final String username) {
+            final Map<String, EaseUser> localUsers = SuperwechatHelper.getInstance().getContactList();
+            final Map<String, User> localAppUsers = SuperwechatHelper.getInstance().getAppContactList();
+            NetDao.deleteContact(appContext,SuperwechatHelper.getInstance().getCurrentuser().getMUserName(),username, new OkHttpUtils.OnCompleteListener<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    if (result!=null)
+                    {
+                        Result re=ResultUtils.getResultFromJson(result,User.class);
+                        if (re!=null&&re.isRetMsg())
+                        {
+                            CommonUtils.showShortToast("删除成功！");
+                            localAppUsers.remove(username);
+                            inviteMessgeDao.deleteAppMessage(username);
+                            userDao.deleteAppContact(username);
+                            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
             localUsers.remove(username);
+
             userDao.deleteContact(username);
+
             inviteMessgeDao.deleteMessage(username);
 
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));

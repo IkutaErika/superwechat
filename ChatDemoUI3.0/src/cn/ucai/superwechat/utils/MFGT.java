@@ -50,10 +50,10 @@ public class MFGT {
         intent.setClass(activity,AddFriendActivity.class);
         activity.startActivity(intent);
     }
-    public static void gotoChat(Activity activity, String username) {
+    public static void gotoChat(Activity activity, User user) {
         Intent intent=new Intent();
+        intent.putExtra("userId",user.getMUserName());
         intent.setClass(activity,ChatActivity.class);
-        intent.putExtra("userId",username);
-        startActivity(activity,intent);
+        activity.startActivity(intent);
     }
 }

@@ -18,6 +18,7 @@ import java.util.Map;
 
 import com.hyphenate.chat.EMClient;
 
+import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 
@@ -35,6 +36,7 @@ import com.hyphenate.util.NetUtils;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -129,7 +131,6 @@ public class ContactListFragment extends EaseContactListFragment {
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
                     User user1= SuperwechatHelper.getInstance().getAppContactList().get(username);
                     MFGT.gotoFrientProfile(getActivity(),user1);
-
                 }
             }
         });
@@ -257,11 +258,14 @@ public class ContactListFragment extends EaseContactListFragment {
 					// remove user from memory and database
 					UserDao dao = new UserDao(getActivity());
 					dao.deleteContact(tobeDeleteUser.getUsername());
+                    dao.deleteAppContact(tobeDeleteUser.getUsername());
 					SuperwechatHelper.getInstance().getContactList().remove(tobeDeleteUser.getUsername());
+					SuperwechatHelper.getInstance().getAppContactList().remove(tobeDeleteUser.getUsername());
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
 							contactList.remove(tobeDeleteUser);
+                            AppcontactList.remove(tobeDeleteUser);
 							contactListLayout.refresh();
 
 						}

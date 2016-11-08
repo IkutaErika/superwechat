@@ -97,7 +97,13 @@ public class SuperwechatDBManager {
             db.delete(UserDao.TABLE_NAME, UserDao.COLUMN_NAME_ID + " = ?", new String[]{username});
         }
     }
-    
+    synchronized public void deleteAppContact(String username){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(db.isOpen()){
+            db.delete(UserDao.USER_TABLE_NAME, UserDao.USER_COLUMN_NAME + " = ?", new String[]{username});
+        }
+    }
+
     /**
      * save a contact
      * @param user
@@ -278,7 +284,13 @@ public class SuperwechatDBManager {
             db.delete(InviteMessgeDao.TABLE_NAME, InviteMessgeDao.COLUMN_NAME_FROM + " = ?", new String[]{from});
         }
     }
-    
+    synchronized public void deleteAppMessage(String from){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if(db.isOpen()){
+            db.delete(InviteMessgeDao.TABLE_NAME, InviteMessgeDao.COLUMN_NAME_FROM + " = ?", new String[]{from});
+        }
+    }
+
     synchronized int getUnreadNotifyCount(){
         int count = 0;
         SQLiteDatabase db = dbHelper.getReadableDatabase();

@@ -3,6 +3,8 @@ package cn.ucai.superwechat.data;
 import android.content.Context;
 import android.util.Log;
 
+import com.hyphenate.easeui.domain.User;
+
 import java.io.File;
 
 import cn.ucai.superwechat.bean.Result;
@@ -95,4 +97,12 @@ public class NetDao {
                 .execute(onCompleteListener);
     }
 
+    public static void deleteContact(Context appContext, String currentuser, String username, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(appContext);
+        utils.url(I.SERVER_ROOT+I.REQUEST_DELETE_CONTACT)
+                .addParam(I.Contact.USER_NAME,currentuser)
+                .addParam(I.Contact.CU_NAME, username)
+                .targetClass(String.class)
+                .execute(listener);
+    }
 }

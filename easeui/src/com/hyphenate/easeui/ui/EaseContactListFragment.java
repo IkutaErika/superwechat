@@ -37,6 +37,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.widget.EaseContactList;
 import com.hyphenate.exceptions.HyphenateException;
@@ -56,6 +57,7 @@ import java.util.Map.Entry;
 public class EaseContactListFragment extends EaseBaseFragment {
     private static final String TAG = "EaseContactListFragment";
     protected List<EaseUser> contactList;
+    protected List<User> AppcontactList;
     protected ListView listView;
     protected boolean hidden;
     protected ImageButton clearSearch;
@@ -100,6 +102,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
         EMClient.getInstance().addConnectionListener(connectionListener);
         
         contactList = new ArrayList<EaseUser>();
+        AppcontactList = new ArrayList<User>();
         getContactList();
         //init list
         contactListLayout.init(contactList);

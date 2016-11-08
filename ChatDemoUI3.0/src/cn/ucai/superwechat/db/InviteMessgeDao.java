@@ -68,7 +68,10 @@ public class InviteMessgeDao {
 	public void deleteMessage(String from){
 	    SuperwechatDBManager.getInstance().deleteMessage(from);
 	}
-	
+	public void deleteAppMessage(String from){
+	    SuperwechatDBManager.getInstance().deleteAppMessage(from);
+	}
+
 	public int getUnreadMessagesCount(){
 	    return SuperwechatDBManager.getInstance().getUnreadNotifyCount();
 	}
