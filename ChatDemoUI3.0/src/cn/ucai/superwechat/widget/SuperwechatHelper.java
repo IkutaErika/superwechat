@@ -26,7 +26,11 @@ import com.hyphenate.chat.EMMessage.Type;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.chat.EMTextMessageBody;
 
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.utils.L;
+import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.SuperwechatModel;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.db.SuperwechatDBManager;
@@ -623,14 +627,38 @@ public class SuperwechatHelper {
             // save contact
             Map<String, EaseUser> localUsers = getContactList();
             Map<String, EaseUser> toAddUsers = new HashMap<String, EaseUser>();
-            EaseUser user = new EaseUser(username);
+            final EaseUser user = new EaseUser(username);
 
             if (!localUsers.containsKey(username)) {
                 userDao.saveContact(user);
             }
             toAddUsers.put(username, user);
             localUsers.putAll(toAddUsers);
+              Map<String,User> localAppUsers=getAppContactList();
+            if (!localAppUsers.containsKey(username)) {
+                NetDao.addContact(appContext, EMClient.getInstance().getCurrentUser(),username, new OkHttpUtils.OnCompleteListener<String>() {
+                    @Override
+                    public void onSuccess(String result) {
+                        if (result!=null)
+                        {
+                            Result re=  ResultUtils.getResultFromJson(result,User.class);
+                       if (re.isRetMsg()&&re!=null)
+                       {
+                           User u= (User) re.getRetData();
+                           saveAppContact(u);
+                           broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
 
+                       }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 

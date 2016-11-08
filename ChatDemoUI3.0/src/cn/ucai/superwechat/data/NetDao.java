@@ -46,6 +46,8 @@ public class NetDao {
 
     }
 
+
+
     public static void loginin(Context mcontext, String username, String password, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
         OkHttpUtils<String> utils=new OkHttpUtils<>(mcontext);
         utils.url(I.SERVER_ROOT+I.REQUEST_LOGIN)
@@ -84,4 +86,13 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }
+    public static void addContact(Context mcontext, String username, String othername, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(mcontext);
+        utils.url(I.SERVER_ROOT+I.REQUEST_ADD_CONTACT)
+                .addParam(I.Contact.USER_NAME,username)
+                .addParam(I.Contact.CU_NAME, othername)
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+
 }
