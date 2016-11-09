@@ -11,11 +11,18 @@ import android.widget.TextView;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 
 /**
@@ -52,13 +59,15 @@ public class FriendProfileActivity extends BaseActivity {
     }
 
     private void isFriend() {
-        if (SuperwechatHelper.getInstance().getAppContactList().containsKey(user.getMUserName())) {
-            btnSendmessage.setVisibility(View.VISIBLE);
-            btnSendvideo.setVisibility(View.VISIBLE);
-        } else {
+        if (SuperwechatHelper.getInstance().getAppContactList().containsKey(user.getMUserName()))
+        {
+                btnSendmessage.setVisibility(View.VISIBLE);
+                btnSendvideo.setVisibility(View.VISIBLE);
+        }
+        else {
             btnAddContacts.setVisibility(View.VISIBLE);
         }
-    }
+     }
 
     private void setUserInfo() {
         EaseUserUtils.setCurrentAppUserAvatar(this, user, ivProfileAvatar);

@@ -138,7 +138,8 @@ public class LoginActivity extends BaseActivity {
         });
         pd.setMessage(getString(R.string.Is_landing));
         pd.show();
-        loginEMService();
+        LoginAppService();
+
         // After logout，the DemoDB may still be accessed due to async callback, so the DemoDB will be re-opened again.
         // close it before login to make sure DemoDB not overlap
 
@@ -154,7 +155,7 @@ public class LoginActivity extends BaseActivity {
         EMClient.getInstance().login(currentUsername, MD5.getMessageDigest(currentPassword), new EMCallBack() {
             @Override
             public void onSuccess() {
-                LoginAppService();
+                LoginSuccess();
             }
 
             @Override
@@ -182,13 +183,9 @@ public class LoginActivity extends BaseActivity {
                      User user= (User) result.getRetData();
                         if (user!=null){
                             UserDao dao=new UserDao(LoginActivity.this);
-                            EaseUser euser=new EaseUser(user.getMUserName());
-                            euser.setAvatar(user.getAvatar());
-                            euser.setNickname(user.getMUserNick());
-                            dao.saveContact(euser);
                             dao.saveUsers(user);
                             SuperwechatHelper.getInstance().setCurrentuser(user);
-                            LoginSuccess();
+                            loginEMService();
                         }
                     }
                     else {
@@ -271,8 +268,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!pd.equals(null)){
+        if (pd!=null) {
             pd.dismiss();
         }
+
     }
 }

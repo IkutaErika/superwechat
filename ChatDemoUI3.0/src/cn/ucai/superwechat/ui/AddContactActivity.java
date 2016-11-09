@@ -86,10 +86,6 @@ public class AddContactActivity extends BaseActivity {
              if (res!=null&&res.isRetMsg())
              {
                  User user= (User) res.getRetData();
-                 EaseUser euser=new EaseUser(user.getMUserName());
-                 euser.setNickname(user.getMUserNick());
-                 euser.setAvatar(euser.getAvatar());
-                 SuperwechatHelper.getInstance().saveContact(euser);
                  if (user!=null&&res.isRetMsg())
                  {
                      MFGT.gotoFrientProfile(AddContactActivity.this,user);

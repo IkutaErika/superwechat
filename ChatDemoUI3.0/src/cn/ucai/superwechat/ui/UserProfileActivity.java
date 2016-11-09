@@ -283,10 +283,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                     if (result!=null&&result.isRetMsg())
                     {
                       User u = (User) result.getRetData();
-                        EaseUser u2=new EaseUser(u.getMUserName());
-                        u2.setAvatar(u.getAvatar());
-                        u2.setNick(u.getMUserNick());
-                        SuperwechatHelper.getInstance().saveContact(u2);
                         SuperwechatHelper.getInstance().saveAppContact(u);
                         setPicToView(Picdata);
                     }
@@ -415,7 +411,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         if (extra!=null)
         {
             Bitmap bitmap= extra.getParcelable("data");
-            String imagepath=EaseImageUtils.getImagePath(user.getMUserName()+ I.AVATAR_SUFFIX_JPG);
+            String imagepath=EaseImageUtils.getImagePath(user.getMUserName()+ I.AVATAR_SUFFIX_PNG);
             File file=new File(imagepath);//要保存的图片路径
             try {
                 BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(file));

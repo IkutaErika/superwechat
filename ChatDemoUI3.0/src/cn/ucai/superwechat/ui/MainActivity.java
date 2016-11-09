@@ -114,6 +114,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         ButterKnife.bind(this);
         // runtime permission for android 6.0, just require all permissions here for simple
         requestPermissions();
+        conversationListFragment = new ConversationListFragment();
         contactListFragment = new ContactListFragment();
         initView();
         uMeng();
@@ -122,8 +123,6 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
 
         inviteMessgeDao = new InviteMessgeDao(this);
         UserDao userDao = new UserDao(this);
-    /*	conversationListFragment = new ConversationListFragment();
-     */
 	    /*		SettingsFragment settingFragment = new SettingsFragment();
 		fragments = new Fragment[] { conversationListFragment, contactListFragment, settingFragment};
 
@@ -214,7 +213,7 @@ public class MainActivity extends BaseActivity implements DMTabHost.OnCheckedCha
         layoutViewpager.setOffscreenPageLimit(4);
         tabAdpter.clear();
 
-        tabAdpter.addFragment(new ConversationListFragment(),getString(R.string.app_name));
+        tabAdpter.addFragment( conversationListFragment,getString(R.string.app_name));
         tabAdpter.addFragment(contactListFragment,getString(R.string.contacts));
         tabAdpter.addFragment(new DiscoverFragment(),getString(R.string.discover));
         tabAdpter.addFragment(new ProfileFrament(),getString(R.string.me));
@@ -321,12 +320,12 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
             public void run() {
                 // refresh unread count
                 updateUnreadLabel();
-			/*	if (currentTabIndex == 0) {
+			if (currentTabIndex == 0) {
 					// refresh conversation list
 					if (conversationListFragment != null) {
 						conversationListFragment.refresh();
 					}
-				}*/
+				}
             }
         });
     }
@@ -348,13 +347,12 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
             public void onReceive(Context context, Intent intent) {
                 updateUnreadLabel();
                 updateUnreadAddressLable();
-             /*   if (currentTabIndex == 0) {
+              if (currentTabIndex == 0) {
                     // refresh conversation list
                     if (conversationListFragment != null) {
                         conversationListFragment.refresh();
                     }
-                } else
-              */  if (currentTabIndex == 1) {
+                } else if (currentTabIndex == 1) {
                     if(contactListFragment != null) {
                         contactListFragment.refresh();
                     }

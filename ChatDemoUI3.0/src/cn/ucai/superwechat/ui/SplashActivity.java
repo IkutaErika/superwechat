@@ -7,8 +7,13 @@ import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,7 +57,40 @@ public class SplashActivity extends BaseActivity {
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     UserDao dao =new UserDao(SplashActivity.this);
-                    User user= dao.getUsers(EMClient.getInstance().getCurrentUser());
+                    final User user= dao.getUsers(EMClient.getInstance().getCurrentUser());
+                    if (user!=null)
+                    {
+                        NetDao.downloadAllFriends(SplashActivity.this,SuperwechatHelper.getInstance().getCurrentuser().getMUserName(), new OkHttpUtils.OnCompleteListener<String>() {
+                            @Override
+                            public void onSuccess(String result) {
+                                L.e("SpLASH"+result);
+                                if (result==null) {
+                               return;
+                                }
+                                else {
+                                    Result re = ResultUtils.getListResultFromJson(result, User.class);
+                                    if (re.isRetMsg()&&re.getRetData() != null) {
+                                        ArrayList<User> userlist = (ArrayList<User>) re.getRetData();
+                                        SuperwechatHelper.getInstance().getAppContactList().clear();
+                                        SuperwechatHelper.getInstance().getContactList().clear();
+                                        for (int i=0;i<userlist.size();i++) {
+                                            SuperwechatHelper.getInstance().saveAppContact(userlist.get(i));
+                                            EaseUser user1 =new EaseUser(userlist.get(i).getMUserName());
+                                            user1.setAvatar(userlist.get(i).getAvatar());
+                                            user1.setNickname(userlist.get(i).getMUserNick());
+                                            SuperwechatHelper.getInstance().saveContact(user1);
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+
+                    }
                     SuperwechatHelper.getInstance().setCurrentuser(user);
                     long costTime = System.currentTimeMillis() - start;
                     //wait

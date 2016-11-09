@@ -39,7 +39,7 @@ public class AddFriendActivity extends BaseActivity {
     }
     private void initview() {
         String msg=getString(R.string.addcontact_send_msg_prefix)
-                + EaseUserUtils.getCurrentAppUserInfo(EMClient.getInstance().getCurrentUser()).getMUserNick();
+                + SuperwechatHelper.getInstance().getCurrentuser().getMUserNick();
         etMsg.setText(msg);
         User user = (User) getIntent().getSerializableExtra("user");
         if (user==null)

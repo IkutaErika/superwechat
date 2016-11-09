@@ -70,6 +70,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
     protected FrameLayout contentContainer;
     
     private Map<String, EaseUser> contactsMap;
+    private Map<String, User> AppcontactsMap;
 
     
     @Override
@@ -173,42 +174,6 @@ public class EaseContactListFragment extends EaseBaseFragment {
     }
 
 
-    /**
-     * move user to blacklist
-     */
-    protected void moveToBlacklist(final String username){
-        final ProgressDialog pd = new ProgressDialog(getActivity());
-        String st1 = getResources().getString(R.string.Is_moved_into_blacklist);
-        final String st2 = getResources().getString(R.string.Move_into_blacklist_success);
-        final String st3 = getResources().getString(R.string.Move_into_blacklist_failure);
-        pd.setMessage(st1);
-        pd.setCanceledOnTouchOutside(false);
-        pd.show();
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    //move to blacklist
-                    EMClient.getInstance().contactManager().addUserToBlackList(username,false);
-                    getActivity().runOnUiThread(new Runnable() {
-                        public void run() {
-                            pd.dismiss();
-                            Toast.makeText(getActivity(), st2, Toast.LENGTH_SHORT).show();
-                            refresh();
-                        }
-                    });
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                    getActivity().runOnUiThread(new Runnable() {
-                        public void run() {
-                            pd.dismiss();
-                            Toast.makeText(getActivity(), st3, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        }).start();
-        
-    }
     
     // refresh ui
     public void refresh() {
@@ -219,9 +184,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
 
     @Override
     public void onDestroy() {
-        
         EMClient.getInstance().removeConnectionListener(connectionListener);
-        
         super.onDestroy();
     }
     
@@ -274,7 +237,52 @@ public class EaseContactListFragment extends EaseBaseFragment {
         });
 
     }
-    
+    protected void getAppContactList() {
+        AppcontactList.clear();
+        if(AppcontactsMap == null){
+            return;
+        }
+        synchronized (this.AppcontactsMap) {
+            Iterator<Entry<String, User>> iterator = AppcontactsMap.entrySet().iterator();
+            List<String> blackList = EMClient.getInstance().contactManager().getBlackListUsernames();
+            while (iterator.hasNext()) {
+                Entry<String, User> entry = iterator.next();
+                // to make it compatible with data in previous version, you can remove this check if this is new app
+                if (!entry.getKey().equals("item_new_friends")
+                        && !entry.getKey().equals("item_groups")
+                        && !entry.getKey().equals("item_chatroom")
+                        && !entry.getKey().equals("item_robots")){
+                    if(!blackList.contains(entry.getKey())){
+                        //filter out users in blacklist
+                        User user = entry.getValue();
+                        EaseCommonUtils.setAppUserInitialLetter(user);
+                        AppcontactList.add(user);
+                    }
+                }
+            }
+        }
+
+        // sorting
+        Collections.sort(AppcontactList, new Comparator<User>() {
+
+            @Override
+            public int compare(User lhs, User rhs) {
+                if(lhs.getInitialLetter().equals(rhs.getInitialLetter())){
+                    return lhs.getMUserNick().compareTo(rhs.getMUserNick());
+                }else{
+                    if("#".equals(lhs.getInitialLetter())){
+                        return 1;
+                    }else if("#".equals(rhs.getInitialLetter())){
+                        return -1;
+                    }
+                    return lhs.getInitialLetter().compareTo(rhs.getInitialLetter());
+                }
+
+            }
+        });
+
+    }
+
     
     
     protected EMConnectionListener connectionListener = new EMConnectionListener() {
@@ -321,13 +329,17 @@ public class EaseContactListFragment extends EaseBaseFragment {
     public void setContactsMap(Map<String, EaseUser> contactsMap){
         this.contactsMap = contactsMap;
     }
-    
+    public void setAppContactsMap(Map<String,User> AppcontactsMap){
+        this.AppcontactsMap = AppcontactsMap;
+    }
+
     public interface EaseContactListItemClickListener {
         /**
          * on click event for item in contact list 
          * @param user --the user of item
          */
         void onListItemClicked(EaseUser user);
+        void onListItemClicked(User user);
     }
     
     /**

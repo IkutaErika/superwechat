@@ -63,10 +63,11 @@ public class ResultUtils {
             if(!jsonObject.isNull("retData")) {
                 JSONArray array = jsonObject.getJSONArray("retData");
                 if (array != null) {
-                    List<T> list = new ArrayList<T>();
+                    ArrayList<T> list = new ArrayList<T>();
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject jsonGroupAvatar = array.getJSONObject(i);
-                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
+                        String    date = URLDecoder.decode(jsonGroupAvatar.toString(), I.UTF_8);
+                        T ga = new Gson().fromJson(date, clazz);
                         list.add(ga);
                     }
                     result.setRetData(list);

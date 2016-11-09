@@ -9,6 +9,7 @@ import java.io.File;
 
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.ui.AddContactActivity;
+import cn.ucai.superwechat.ui.FriendProfileActivity;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MD5;
 import cn.ucai.superwechat.widget.I;
@@ -104,5 +105,13 @@ public class NetDao {
                 .addParam(I.Contact.CU_NAME, username)
                 .targetClass(String.class)
                 .execute(listener);
+    }
+
+    public static void downloadAllFriends(Context friendProfileActivity, String currentuser, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(friendProfileActivity);
+        utils.url(I.SERVER_ROOT+I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
+                .addParam(I.Contact.USER_NAME,currentuser)
+                .targetClass(String.class)
+                .execute(onCompleteListener);
     }
 }
