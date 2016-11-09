@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.hyphenate.easeui.domain.User;
 
@@ -13,6 +14,7 @@ import cn.ucai.superwechat.ui.AddFriendActivity;
 import cn.ucai.superwechat.ui.ChatActivity;
 import cn.ucai.superwechat.ui.FriendProfileActivity;
 import cn.ucai.superwechat.ui.MainActivity;
+import cn.ucai.superwechat.ui.UserProfileActivity;
 
 
 public class MFGT {
@@ -54,6 +56,15 @@ public class MFGT {
         Intent intent=new Intent();
         intent.putExtra("userId",user.getMUserName());
         intent.setClass(activity,ChatActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void gotoUserProfile(FragmentActivity activity, User user) {
+        Intent intent=new Intent();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("user",user);
+        intent.putExtras(bundle);
+        intent.setClass(activity,FriendProfileActivity.class);
         activity.startActivity(intent);
     }
 }

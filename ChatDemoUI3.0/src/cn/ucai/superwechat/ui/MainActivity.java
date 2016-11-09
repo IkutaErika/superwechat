@@ -469,7 +469,6 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
        layoutHost.setUnreadCount(0,count);
-
     }
 
     /**

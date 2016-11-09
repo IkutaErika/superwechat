@@ -106,7 +106,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
         AppcontactList = new ArrayList<User>();
         getContactList();
         //init list
-        contactListLayout.init(contactList);
+        contactListLayout.init(AppcontactList);
         
         if(listItemClickListener != null){
             listView.setOnItemClickListener(new OnItemClickListener() {

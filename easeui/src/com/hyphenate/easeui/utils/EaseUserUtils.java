@@ -96,13 +96,22 @@ public class EaseUserUtils {
      * set user's nickname
      */
     public static void setAppUserNick(String username,TextView textView){
-        Log.i("superwechat","setAppUserNick::"+getCurrentAppUserInfo(username).toString());
+
         if(textView != null){
             User user = getCurrentAppUserInfo(username);
             if(user != null && user.getMUserNick() != null){
                 textView.setText(user.getMUserNick());
             }else{
                 textView.setText(username);
+            }
+        }
+    }
+    public static void setAppUserNick(User user,TextView textView){
+        if(textView != null){
+            if(user != null && user.getMUserNick() != null){
+                textView.setText(user.getMUserNick());
+            }else{
+                textView.setText(user.getMUserName());
             }
         }
     }
@@ -143,7 +152,7 @@ public class EaseUserUtils {
         tvUsernameProfile.setText(username);
     }
 
-    public static User getCurrentAppUserInfo(  String username) {
+    public static User getCurrentAppUserInfo(String username) {
        if (userProvider!=null)
        return userProvider.getAppUser(username);
         return null;
@@ -154,6 +163,9 @@ public class EaseUserUtils {
 
     public static void setCurrentAppUserNick(String nickname,TextView tvProfileNickname) {
         setAppUserNick(nickname,tvProfileNickname);
+    }
+    public static void setCurrentAppUserNick(User user,TextView tvProfileNickname) {
+        setAppUserNick(user,tvProfileNickname);
     }
 
     public static void setCurrentAppUserNameWithNo(String username,TextView tvProfileUsername) {

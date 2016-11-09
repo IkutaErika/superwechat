@@ -183,6 +183,7 @@ public class LoginActivity extends BaseActivity {
                      User user= (User) result.getRetData();
                         if (user!=null){
                             UserDao dao=new UserDao(LoginActivity.this);
+                            dao.saveAppContact(user);
                             dao.saveUsers(user);
                             SuperwechatHelper.getInstance().setCurrentuser(user);
                             loginEMService();

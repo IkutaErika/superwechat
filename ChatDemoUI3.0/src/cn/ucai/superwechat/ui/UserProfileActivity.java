@@ -72,7 +72,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         ButterKnife.bind(this);
         initView();
         initListener();
-        user=EaseUserUtils.getCurrentAppUserInfo(EMClient.getInstance().getCurrentUser());
+        user=SuperwechatHelper.getInstance().getAppContactList().get(EMClient.getInstance().getCurrentUser());
     }
 
     private void initView() {
@@ -283,6 +283,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
                     if (result!=null&&result.isRetMsg())
                     {
                       User u = (User) result.getRetData();
+                        EaseUser u2=new EaseUser(u.getMUserName());
+                        u2.setAvatar(u.getAvatar());
+                        u2.setNick(u.getMUserNick());
+                        SuperwechatHelper.getInstance().saveContact(u2);
                         SuperwechatHelper.getInstance().saveAppContact(u);
                         setPicToView(Picdata);
                     }

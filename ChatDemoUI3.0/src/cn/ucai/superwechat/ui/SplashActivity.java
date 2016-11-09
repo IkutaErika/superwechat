@@ -34,7 +34,7 @@ public class SplashActivity extends BaseActivity {
     private static final int sleepTime = 2000;
     @Bind(R.id.splash_root)
     RelativeLayout rootLayout;
-
+User users=null;
     @Override
     protected void onCreate(Bundle arg0) {
         setContentView(R.layout.em_activity_splash);
@@ -58,14 +58,14 @@ public class SplashActivity extends BaseActivity {
                     EMClient.getInstance().chatManager().loadAllConversations();
                     UserDao dao =new UserDao(SplashActivity.this);
                     final User user= dao.getUsers(EMClient.getInstance().getCurrentUser());
+                    SuperwechatHelper.getInstance().setCurrentuser(user);
                     if (user!=null)
                     {
                         NetDao.downloadAllFriends(SplashActivity.this,SuperwechatHelper.getInstance().getCurrentuser().getMUserName(), new OkHttpUtils.OnCompleteListener<String>() {
                             @Override
                             public void onSuccess(String result) {
-                                L.e("SpLASH"+result);
                                 if (result==null) {
-                               return;
+                                    return;
                                 }
                                 else {
                                     Result re = ResultUtils.getListResultFromJson(result, User.class);
@@ -89,9 +89,7 @@ public class SplashActivity extends BaseActivity {
 
                             }
                         });
-
                     }
-                    SuperwechatHelper.getInstance().setCurrentuser(user);
                     long costTime = System.currentTimeMillis() - start;
                     //wait
                     if (sleepTime - costTime > 0) {

@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.utils.MFGT;
+import cn.ucai.superwechat.widget.SuperwechatHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,8 +57,9 @@ public class ProfileFrament extends Fragment {
     }
 
     private void setUserInfo() {
-        EaseUserUtils.setCurrentAppUserAvatar(getActivity(),ivProfileAvatar);
-        EaseUserUtils.setCurrentAppUserNick(tvProfileNickname);
+        User user =SuperwechatHelper.getInstance().getAppContactList().get(SuperwechatHelper.getInstance());
+        EaseUserUtils.setCurrentAppUserAvatar(getActivity(),user,ivProfileAvatar);
+        EaseUserUtils.setCurrentAppUserNick(user,tvProfileNickname);
         EaseUserUtils.setCurrentAppUserNameWithNo(tvProfileUsername);
     }
 
