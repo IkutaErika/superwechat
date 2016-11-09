@@ -530,7 +530,10 @@ TitlePopup.OnItemOnClickListener onItemOnClickListener=new TitlePopup.OnItemOnCl
             updateUnreadLabel();
             updateUnreadAddressLable();
         }
-
+        if (getIntent().getBooleanExtra("backtoConversation",false))
+        {
+            layoutHost.setChecked(0);
+        }
         // unregister this event listener when this activity enters the
         // background
         SuperwechatHelper sdkHelper = SuperwechatHelper.getInstance();
