@@ -72,13 +72,13 @@ User users=null;
                                     if (re.isRetMsg()&&re.getRetData() != null) {
                                         ArrayList<User> userlist = (ArrayList<User>) re.getRetData();
                                         SuperwechatHelper.getInstance().getAppContactList().clear();
-                                        SuperwechatHelper.getInstance().getContactList().clear();
+                            //            SuperwechatHelper.getInstance().getContactList().clear();
                                         for (int i=0;i<userlist.size();i++) {
                                             SuperwechatHelper.getInstance().saveAppContact(userlist.get(i));
-                                            EaseUser user1 =new EaseUser(userlist.get(i).getMUserName());
-                                            user1.setAvatar(userlist.get(i).getAvatar());
-                                            user1.setNickname(userlist.get(i).getMUserNick());
-                                            SuperwechatHelper.getInstance().saveContact(user1);
+                            //                EaseUser user1 =new EaseUser(userlist.get(i).getMUserName());
+                                 //           user1.setAvatar(userlist.get(i).getAvatar());
+                               //             user1.setNickname(userlist.get(i).getMUserNick());
+                               //             SuperwechatHelper.getInstance().saveContact(user1);
                                         }
                                     }
                                 }

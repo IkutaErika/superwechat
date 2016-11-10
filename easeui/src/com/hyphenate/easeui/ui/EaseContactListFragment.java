@@ -104,7 +104,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
         
         contactList = new ArrayList<EaseUser>();
         AppcontactList = new ArrayList<User>();
-        getContactList();
+        getAppContactList();
         //init list
         contactListLayout.init(AppcontactList);
         

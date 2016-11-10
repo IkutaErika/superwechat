@@ -88,11 +88,17 @@ public class ContactListFragment extends EaseContactListFragment {
     @Override
     public void refresh() {
       Map<String, EaseUser> m = SuperwechatHelper.getInstance().getContactList();
+      Map<String, User> m2 = SuperwechatHelper.getInstance().getAppContactList();
        if (m instanceof Hashtable<?, ?>) {
             //noinspection unchecked
             m = (Map<String, EaseUser>) ((Hashtable<String, EaseUser>)m).clone();
         }
+       if (m2 instanceof Hashtable<?, ?>) {
+            //noinspection unchecked
+           m2 = (Map<String, User>) ((Hashtable<String, User>)m2).clone();
+        }
       setContactsMap(m);
+      setAppContactsMap(m2);
         super.refresh();
         if(inviteMessgeDao == null){
             inviteMessgeDao = new InviteMessgeDao(getActivity());
@@ -120,7 +126,7 @@ public class ContactListFragment extends EaseContactListFragment {
         titleBar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         titleBar.setVisibility(View.GONE);
         //设置联系人数据
-      Map<String, EaseUser> m = SuperwechatHelper.getInstance().getContactList();
+   /*   Map<String, EaseUser> m = SuperwechatHelper.getInstance().getContactList();
       if (m instanceof Hashtable<?, ?>) {
             m = (Map<String, EaseUser>) ((Hashtable<String, EaseUser>)m).clone();
         }
@@ -136,6 +142,25 @@ public class ContactListFragment extends EaseContactListFragment {
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
                     User user1=SuperwechatHelper.getInstance().getAppContactList().get(username);
                     MFGT.gotoFrientProfile(getActivity(),user1);
+                }
+            }
+        });*/
+      Map<String, User> m2 = SuperwechatHelper.getInstance().getAppContactList();
+      if (m2 instanceof Hashtable<?, ?>) {
+          m2 = (Map<String, User>) ((Hashtable<String, User>)m2).clone();
+        }
+      //  setContactsMap(m);
+        setAppContactsMap(m2);
+        super.setUpView();
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User user = (User)listView.getItemAtPosition(position);
+                if (user != null) {
+                    String username = user.getMUserName();
+                    // demo中直接进入聊天页面，实际一般是进入用户详情页
+                    MFGT.gotoFrientProfile(getActivity(),user);
                 }
             }
         });

@@ -57,7 +57,7 @@ public class ProfileFrament extends Fragment {
     }
 
     private void setUserInfo() {
-        User user =SuperwechatHelper.getInstance().getAppContactList().get(SuperwechatHelper.getInstance());
+        User user =SuperwechatHelper.getInstance().getCurrentuser();
         EaseUserUtils.setCurrentAppUserAvatar(getActivity(),user,ivProfileAvatar);
         EaseUserUtils.setCurrentAppUserNick(user,tvProfileNickname);
         EaseUserUtils.setCurrentAppUserNameWithNo(tvProfileUsername);
