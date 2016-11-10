@@ -173,8 +173,9 @@ public class EaseContactAdapter extends ArrayAdapter<User> implements SectionInd
                 for(int i=0;i<count;i++){
                     final User user = mOriginalList.get(i);
                     String username = user.getMUserName();
+                    String nick = user.getMUserNick();
 
-                    if(username.startsWith(prefixString)){
+                    if(username.contains(prefixString)||nick.contains(prefixString)){
                         newValues.add(user);
                     }
                     else{
@@ -183,7 +184,7 @@ public class EaseContactAdapter extends ArrayAdapter<User> implements SectionInd
 
                          // Start at index 0, in case valueText starts with space(s)
                         for (String word : words) {
-                            if (word.startsWith(prefixString)) {
+                            if (word.contains(prefixString)) {
                                 newValues.add(user);
                                 break;
                             }

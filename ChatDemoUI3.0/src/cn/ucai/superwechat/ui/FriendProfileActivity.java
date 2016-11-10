@@ -95,6 +95,8 @@ public class FriendProfileActivity extends BaseActivity {
                 MFGT.gotoChat(this,user);
                 break;
             case R.id.btn_sendvideo:
+                MFGT.gotoVideo(FriendProfileActivity.this,user.getMUserName(),false);
+
                 break;
         }
     }
