@@ -379,7 +379,6 @@ public class SuperwechatHelper {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
         User user = new UserDao(appContext).getUsers(username);
-        L.e("HELPER:::"+user.toString());
         //if user is not in your contacts, set inital letter for him/her
         if (user == null) {
             user = new User(username);
@@ -650,11 +649,8 @@ public class SuperwechatHelper {
                             Result re = ResultUtils.getResultFromJson(result, User.class);
                             if (re.isRetMsg() && re != null) {
                                 User u = (User) re.getRetData();
-
                                 saveAppContact(u);
-
                                 broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
-
                             }
                         }
 
@@ -1116,9 +1112,37 @@ public class SuperwechatHelper {
         if (isSyncingContactsWithServer) {
             return;
         }
-
         isSyncingContactsWithServer = true;
+          NetDao.downloadAllFriends(appContext,SuperwechatHelper.getInstance().getCurrentUsernName(), new OkHttpUtils.OnCompleteListener<String>() {
+              @Override
+              public void onSuccess(String s) {
+                  if (s==null) {
+                      return;
+                  }
+                  else {
+                      Result result = ResultUtils.getListResultFromJson(s, User.class);
+                      if (result.isRetMsg()&&result.getRetData() != null) {
+                          ArrayList<User> userlist = (ArrayList<User>) result.getRetData();
+                          Map<String,User> usermap=new HashMap<String,User>();
+                          for (User user:userlist) {
+                              EaseCommonUtils.setAppUserInitialLetter(user);
+                              usermap.put(user.getMUserName(),user);
+                          }
+                          SuperwechatHelper.getInstance().getAppContactList().clear();
+                          getAppContactList().putAll(usermap);
+                          UserDao dao =new UserDao(appContext);
+                          dao.saveAppContactList(userlist);
+                          broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
 
+                      }
+                  }
+              }
+
+              @Override
+              public void onError(String error) {
+
+              }
+          });
         new Thread() {
             @Override
             public void run() {
@@ -1133,19 +1157,25 @@ public class SuperwechatHelper {
                         return;
                     }
 
-                    Map<String, EaseUser> userlist = new HashMap<String, EaseUser>();
+                   Map<String, EaseUser> userlist2 = new HashMap<String, EaseUser>();
+                //    Map<String, User> userlist = new HashMap<String, User>();
                     for (String username : usernames) {
-                        EaseUser user = new EaseUser(username);
-                        EaseCommonUtils.setUserInitialLetter(user);
-                        userlist.put(username, user);
+                  //      User user = new User(username);
+                        EaseUser user2=new EaseUser(username);
+              //          EaseCommonUtils.setAppUserInitialLetter(user);
+                        EaseCommonUtils.setUserInitialLetter(user2);
+              //          userlist.put(username, user);
+                        userlist2.put(username, user2);
                     }
                     // save the contact list to cache
-                    getContactList().clear();
-                    getContactList().putAll(userlist);
+                   getContactList().clear();
+                  getContactList().putAll(userlist2);
                     // save the contact list to database
                     UserDao dao = new UserDao(appContext);
-                    List<EaseUser> users = new ArrayList<EaseUser>(userlist.values());
-                    dao.saveContactList(users);
+                    List<EaseUser> users = new ArrayList<EaseUser>(userlist2.values());
+                //    List<User> users2 = new ArrayList<User>(userlist.values());
+                     dao.saveContactList(users);
+              //      dao.saveAppContactList(users2);
 
                     SuperwechatModel.setContactSynced(true);
                     EMLog.d(TAG, "set contact syn status to true");
@@ -1160,7 +1190,8 @@ public class SuperwechatHelper {
 
                         @Override
                         public void onSuccess(List<EaseUser> uList) {
-                            updateContactList(uList);
+                           updateContactList(uList);
+                     //     updateAppContactList(uList);
                             getUserProfileManager().notifyContactInfosSyncListener(true);
                         }
 

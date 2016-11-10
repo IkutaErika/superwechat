@@ -63,7 +63,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
     protected ImageButton clearSearch;
     protected EditText query;
     protected Handler handler = new Handler();
-    protected EaseUser toBeProcessUser;
+    protected User toBeProcessUser;
     protected String toBeProcessUsername;
     protected EaseContactList contactListLayout;
     protected boolean isConflict;
@@ -177,7 +177,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
     
     // refresh ui
     public void refresh() {
-        getContactList();
+        getAppContactList();
         contactListLayout.refresh();
         query.getText().clear();
         hideSoftKeyboard();

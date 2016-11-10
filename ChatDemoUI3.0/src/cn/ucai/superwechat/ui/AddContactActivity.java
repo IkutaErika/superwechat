@@ -35,6 +35,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
@@ -88,7 +89,7 @@ public class AddContactActivity extends BaseActivity {
                  User user= (User) res.getRetData();
                  if (user!=null&&res.isRetMsg())
                  {
-                     MFGT.gotoFrientProfile(AddContactActivity.this,user.getMUserName());
+                     MFGT.gotoFrientProfile(AddContactActivity.this,user);
                  }
                  progressDialog.dismiss();
              }

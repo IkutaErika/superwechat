@@ -158,7 +158,6 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
         msgid = UUID.randomUUID().toString();
         isInComingCall = getIntent().getBooleanExtra("isComingCall", false);
         username = getIntent().getStringExtra("username");
-
         nickTextView.setText(username);
 
         // local surfaceview

@@ -58,7 +58,14 @@ public class FriendProfileActivity extends BaseActivity {
     }
 
     private void initview() {
-        user = SuperwechatHelper.getInstance().getAppContactList().get(getIntent().getStringExtra("user"));
+
+        if (getIntent().getIntExtra("style",0)==2)
+        {
+            user = (User) getIntent().getSerializableExtra("currentuser");
+        }
+        else {
+            user = SuperwechatHelper.getInstance().getAppContactList().get(getIntent().getStringExtra("user"));
+        }
         if (user == null) {
             MFGT.finish(this);
         }

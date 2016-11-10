@@ -62,7 +62,6 @@ public class ContactListFragment extends EaseContactListFragment {
 	
     private static final String TAG = ContactListFragment.class.getSimpleName();
     private ContactSyncListener contactSyncListener;
-    private BlackListSyncListener blackListSyncListener;
     private ContactInfoSyncListener contactInfoSyncListener;
     private View loadingView;
     private ContactItemView applicationItem;
@@ -88,17 +87,17 @@ public class ContactListFragment extends EaseContactListFragment {
     
     @Override
     public void refresh() {
-      Map<String, EaseUser> m = SuperwechatHelper.getInstance().getContactList();
+    //  Map<String, EaseUser> m = SuperwechatHelper.getInstance().getContactList();
       Map<String, User> m2 = SuperwechatHelper.getInstance().getAppContactList();
-       if (m instanceof Hashtable<?, ?>) {
+    /*   if (m instanceof Hashtable<?, ?>) {
             //noinspection unchecked
             m = (Map<String, EaseUser>) ((Hashtable<String, EaseUser>)m).clone();
-        }
+        }*/
        if (m2 instanceof Hashtable<?, ?>) {
             //noinspection unchecked
            m2 = (Map<String, User>) ((Hashtable<String, User>)m2).clone();
         }
-      setContactsMap(m);
+  //    setContactsMap(m);
       setAppContactsMap(m2);
         super.refresh();
         if(inviteMessgeDao == null){
@@ -203,11 +202,6 @@ public class ContactListFragment extends EaseContactListFragment {
             SuperwechatHelper.getInstance().removeSyncContactListener(contactSyncListener);
             contactSyncListener = null;
         }
-        
-        if(blackListSyncListener != null){
-            SuperwechatHelper.getInstance().removeSyncBlackListListener(blackListSyncListener);
-        }
-        
         if(contactInfoSyncListener != null){
             SuperwechatHelper.getInstance().getUserProfileManager().removeSyncContactInfoListener(contactInfoSyncListener);
         }
@@ -247,8 +241,8 @@ public class ContactListFragment extends EaseContactListFragment {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-	    toBeProcessUser = (EaseUser) listView.getItemAtPosition(((AdapterContextMenuInfo) menuInfo).position);
-	    toBeProcessUsername = toBeProcessUser.getUsername();
+	    toBeProcessUser = (User) listView.getItemAtPosition(((AdapterContextMenuInfo) menuInfo).position);
+	    toBeProcessUsername = toBeProcessUser.getMUserName();
 		getActivity().getMenuInflater().inflate(R.menu.em_context_contact_list, menu);
 	}
 
@@ -260,7 +254,7 @@ public class ContactListFragment extends EaseContactListFragment {
                 deleteContact(toBeProcessUser);
                 // remove invitation message
                 InviteMessgeDao dao = new InviteMessgeDao(getActivity());
-                dao.deleteMessage(toBeProcessUser.getUsername());
+                dao.deleteMessage(toBeProcessUser.getMUserName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -275,14 +269,14 @@ public class ContactListFragment extends EaseContactListFragment {
 	 * 
 	 * @param tobeDeleteUser
 	 */
-	public void deleteContact(final EaseUser tobeDeleteUser) {
+	public void deleteContact(final User tobeDeleteUser) {
 		String st1 = getResources().getString(R.string.deleting);
 		final String st2 = getResources().getString(R.string.Delete_failed);
 		final ProgressDialog pd = new ProgressDialog(getActivity());
 		pd.setMessage(st1);
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
-        NetDao.deleteContact(getActivity(),SuperwechatHelper.getInstance().getCurrentuser().getMUserName(),tobeDeleteUser.getUsername(), new OkHttpUtils.OnCompleteListener<String>() {
+        NetDao.deleteContact(getActivity(),SuperwechatHelper.getInstance().getCurrentuser().getMUserName(),tobeDeleteUser.getMUserName(), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String result) {
                 if (result!=null)
@@ -291,9 +285,9 @@ public class ContactListFragment extends EaseContactListFragment {
                     if (re!=null&&re.isRetMsg())
                     {
                         CommonUtils.showShortToast("删除成功！");
-                        SuperwechatHelper.getInstance().getAppContactList().remove(tobeDeleteUser.getUsername());
+                        SuperwechatHelper.getInstance().getAppContactList().remove(tobeDeleteUser.getMUserName());
                         UserDao dao =new UserDao(getActivity());
-                        dao.deleteAppContact(tobeDeleteUser.getUsername());
+                        dao.deleteAppContact(tobeDeleteUser.getMUserName());
                     }
                 }
             }
@@ -307,13 +301,13 @@ public class ContactListFragment extends EaseContactListFragment {
         new Thread(new Runnable() {
 			public void run() {
 				try {
-					EMClient.getInstance().contactManager().deleteContact(tobeDeleteUser.getUsername());
+					EMClient.getInstance().contactManager().deleteContact(tobeDeleteUser.getMUserName());
 					// remove user from memory and database
 					UserDao dao = new UserDao(getActivity());
-					dao.deleteContact(tobeDeleteUser.getUsername());
-                    dao.deleteAppContact(tobeDeleteUser.getUsername());
-					SuperwechatHelper.getInstance().getContactList().remove(tobeDeleteUser.getUsername());
-					SuperwechatHelper.getInstance().getAppContactList().remove(tobeDeleteUser.getUsername());
+					dao.deleteContact(tobeDeleteUser.getMUserName());
+                    dao.deleteAppContact(tobeDeleteUser.getMUserName());
+					SuperwechatHelper.getInstance().getContactList().remove(tobeDeleteUser.getMUserName());
+					SuperwechatHelper.getInstance().getAppContactList().remove(tobeDeleteUser.getMUserName());
 
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
@@ -363,21 +357,6 @@ public class ContactListFragment extends EaseContactListFragment {
                 }
             });
         }
-    }
-    
-    class BlackListSyncListener implements SuperwechatHelper.DataSyncListener {
-
-        @Override
-        public void onSyncComplete(boolean success) {
-            getActivity().runOnUiThread(new Runnable(){
-
-                @Override
-                public void run() {
-                    refresh();
-                }
-            });
-        }
-        
     }
 
     class ContactInfoSyncListener implements SuperwechatHelper.DataSyncListener {
