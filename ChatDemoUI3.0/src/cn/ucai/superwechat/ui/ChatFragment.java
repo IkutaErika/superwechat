@@ -104,10 +104,11 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
 
             @Override
             public void onClick(View v) {
-                if (EasyUtils.isSingleActivity(getActivity())) {
+             //   if (EasyUtils.isSingleActivity(getActivity())) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("backtoConversation",true);
                     startActivity(intent);
-                }
+        //        }
                 onBackPressed();
             }
         });
