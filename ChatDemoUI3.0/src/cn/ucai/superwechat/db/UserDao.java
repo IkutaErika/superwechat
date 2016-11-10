@@ -117,10 +117,10 @@ public class UserDao {
     	SuperwechatDBManager.getInstance().saveRobotList(robotList);
     }
 	public  boolean saveUsers(User user){
-		EaseUser euser =new EaseUser(user.getMUserName());
+/*		EaseUser euser =new EaseUser(user.getMUserName());
 		euser.setAvatar(user.getAvatar());
 		euser.setNick(user.getMUserNick());
-		saveContact(euser);
+		saveContact(euser);*/
 		return SuperwechatDBManager.getInstance().saveUser(user);
 	}
 	public  boolean updateUsers(User user){

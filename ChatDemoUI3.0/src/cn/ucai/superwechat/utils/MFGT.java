@@ -36,11 +36,17 @@ public class MFGT {
         context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
 
-    public static void gotoFrientProfile(Activity activity, User user) {
+/*    public static void gotoFrientProfile(Activity activity, User user) {
         Intent intent=new Intent();
         Bundle bundle=new Bundle();
         bundle.putSerializable("user",user);
         intent.putExtras(bundle);
+        intent.setClass(activity,FriendProfileActivity.class);
+        activity.startActivity(intent);
+    }*/
+    public static void gotoFrientProfile(Activity activity, String username) {
+        Intent intent=new Intent();
+        intent.putExtra("user",username);
         intent.setClass(activity,FriendProfileActivity.class);
         activity.startActivity(intent);
     }
@@ -59,12 +65,10 @@ public class MFGT {
         activity.startActivity(intent);
     }
 
-    public static void gotoUserProfile(FragmentActivity activity, User user) {
+    public static void gotoUsersProfile(Activity activity, String username) {
         Intent intent=new Intent();
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("user",user);
-        intent.putExtras(bundle);
-        intent.setClass(activity,FriendProfileActivity.class);
+        intent.putExtra("user",username);
+        intent.setClass(activity,UserProfileActivity.class);
         activity.startActivity(intent);
     }
 }

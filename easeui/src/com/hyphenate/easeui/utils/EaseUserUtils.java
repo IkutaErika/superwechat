@@ -107,6 +107,7 @@ public class EaseUserUtils {
         }
     }
     public static void setAppUserNick(User user,TextView textView){
+        Log.i("superwechat","EUU::::::ASDAS::"+user.toString());
         if(textView != null){
             if(user != null && user.getMUserNick() != null){
                 textView.setText(user.getMUserNick());

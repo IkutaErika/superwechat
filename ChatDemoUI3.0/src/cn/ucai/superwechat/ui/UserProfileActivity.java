@@ -44,12 +44,14 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.I;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
+import cn.ucai.superwechat.widget.SuperwechatModel;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener {
 
@@ -71,11 +73,13 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         setContentView(R.layout.em_activity_user_profile);
         ButterKnife.bind(this);
         initView();
+      //  user= (User) getIntent().getSerializableExtra("user");
         initListener();
-        user=SuperwechatHelper.getInstance().getAppContactList().get(EMClient.getInstance().getCurrentUser());
     }
 
     private void initView() {
+        UserDao dao =new UserDao(UserProfileActivity.this);
+        user= dao.getUsers(getIntent().getStringExtra("user"));
         /*ivUserProfile = (ImageView) findViewById(R.id.user_head_avatar);
         headPhotoUpdate = (ImageView) findViewById(R.id.user_head_headphoto_update);
         tvUsernameProfile = (TextView) findViewById(R.id.user_username);
@@ -85,8 +89,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void initListener() {
-        EaseUserUtils.setCurrentAppUserAvatar(this,ivUserProfile);
-        EaseUserUtils.setCurrentAppUserNick(tvNicknameProfile);
+        EaseUserUtils.setCurrentAppUserAvatar(this,user,ivUserProfile);
+        EaseUserUtils.setCurrentAppUserNick(user,tvNicknameProfile);
         EaseUserUtils.setCurrentAppUserName(tvUsernameProfile);
     }
 
@@ -206,6 +210,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
     }
 
     private void updateAppNick(String nickName) {
+        if (user.getMUserName().equals(SuperwechatHelper.getInstance().getCurrentUsernName()))
+        {
+            return;
+        }
         NetDao.updateNickname(this, user.getMUserName(),nickName, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String result) {
@@ -274,6 +282,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
         dialog.show();
         File file=saveBitmapFile(Picdata);
+        if (user.getMUserName().equals(SuperwechatHelper.getInstance().getCurrentUsernName()))
+        {
+            return;
+        }
         NetDao.updateAvatar(this, user.getMUserName(), file, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
@@ -431,4 +443,5 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
         }
         return null;
     }
+
 }

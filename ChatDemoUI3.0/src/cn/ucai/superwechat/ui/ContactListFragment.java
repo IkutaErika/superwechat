@@ -22,6 +22,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
 import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
 import cn.ucai.superwechat.widget.Constant;
@@ -160,7 +161,15 @@ public class ContactListFragment extends EaseContactListFragment {
                 if (user != null) {
                     String username = user.getMUserName();
                     // demo中直接进入聊天页面，实际一般是进入用户详情页
-                    MFGT.gotoFrientProfile(getActivity(),user);
+
+                    if (username.equals(EMClient.getInstance().getCurrentUser()))
+                    {
+                        MFGT.gotoUsersProfile(getActivity(),user.getMUserName());
+
+                    }
+                    else {
+                        MFGT.gotoFrientProfile(getActivity(),user.getMUserName());
+                    }
                 }
             }
         });

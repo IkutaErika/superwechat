@@ -28,6 +28,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.widget.Constant;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
@@ -258,7 +259,13 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentHe
         //handling when user click avatar
     //    Intent intent = new Intent(getActivity(), UserProfileActivity.class);
      //   intent.putExtra("username", username);
-        MFGT.gotoUserProfile(getActivity(),SuperwechatHelper.getInstance().getAppContactList().get(username));
+        if (username.equals(EMClient.getInstance().getCurrentUser()))
+        {
+            MFGT.gotoUsersProfile(getActivity(),username);
+        }
+        else {
+            MFGT.gotoFrientProfile(getActivity(),username);
+        }
     //    startActivity(intent);
     }
     

@@ -164,7 +164,8 @@ public class SuperwechatHelper {
 
             //debug mode, you'd better set it to false, if you want release your App officially.
             EMClient.getInstance().setDebugMode(true);
-            //get easeui instance
+            //
+            // easeui instance
             easeUI = EaseUI.getInstance();
             //to set user's profile and avatar
             setEaseUIProviders();
@@ -377,7 +378,8 @@ public class SuperwechatHelper {
     private User getAppUserInfo(String username) {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
-        User user = getAppContactList().get(username);
+        User user = new UserDao(appContext).getUsers(username);
+        L.e("HELPER:::"+user.toString());
         //if user is not in your contacts, set inital letter for him/her
         if (user == null) {
             user = new User(username);

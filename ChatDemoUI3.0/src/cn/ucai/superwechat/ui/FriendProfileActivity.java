@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
@@ -20,6 +21,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.NetDao;
 import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.utils.ResultUtils;
@@ -50,12 +52,16 @@ public class FriendProfileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_profile);
         ButterKnife.bind(this);
-        user = (User) getIntent().getSerializableExtra("user");
+        initview();
+        setUserInfo();
+        isFriend();
+    }
+
+    private void initview() {
+        user = SuperwechatHelper.getInstance().getAppContactList().get(getIntent().getStringExtra("user"));
         if (user == null) {
             MFGT.finish(this);
         }
-        setUserInfo();
-        isFriend();
     }
 
     private void isFriend() {

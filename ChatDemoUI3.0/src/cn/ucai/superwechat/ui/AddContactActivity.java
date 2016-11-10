@@ -88,7 +88,7 @@ public class AddContactActivity extends BaseActivity {
                  User user= (User) res.getRetData();
                  if (user!=null&&res.isRetMsg())
                  {
-                     MFGT.gotoFrientProfile(AddContactActivity.this,user);
+                     MFGT.gotoFrientProfile(AddContactActivity.this,user.getMUserName());
                  }
                  progressDialog.dismiss();
              }

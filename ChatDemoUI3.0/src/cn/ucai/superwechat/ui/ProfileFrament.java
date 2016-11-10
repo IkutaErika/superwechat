@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MFGT;
 import cn.ucai.superwechat.widget.SuperwechatHelper;
 
@@ -33,7 +34,7 @@ public class ProfileFrament extends Fragment {
     TextView tvProfileNickname;
     @Bind(R.id.tv_profile_username)
     TextView tvProfileUsername;
-
+    User user=null;
     public ProfileFrament() {
         // Required empty public constructor
     }
@@ -57,7 +58,7 @@ public class ProfileFrament extends Fragment {
     }
 
     private void setUserInfo() {
-        User user =SuperwechatHelper.getInstance().getCurrentuser();
+         user =SuperwechatHelper.getInstance().getCurrentuser();
         EaseUserUtils.setCurrentAppUserAvatar(getActivity(),user,ivProfileAvatar);
         EaseUserUtils.setCurrentAppUserNick(user,tvProfileNickname);
         EaseUserUtils.setCurrentAppUserNameWithNo(tvProfileUsername);
@@ -73,7 +74,7 @@ public class ProfileFrament extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_profile_view:
-                MFGT.startActivity(getActivity(),UserProfileActivity.class);
+                MFGT.gotoUsersProfile(getActivity(),user.getMUserName());
                 break;
             case R.id.tv_profile_money:
                 //red packet code : 进入零钱页面
