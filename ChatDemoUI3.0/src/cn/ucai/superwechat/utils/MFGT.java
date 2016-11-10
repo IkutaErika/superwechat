@@ -13,9 +13,13 @@ import cn.ucai.superwechat.ui.AddContactActivity;
 import cn.ucai.superwechat.ui.AddFriendActivity;
 import cn.ucai.superwechat.ui.ChatActivity;
 import cn.ucai.superwechat.ui.FriendProfileActivity;
+import cn.ucai.superwechat.ui.GroupsActivity;
 import cn.ucai.superwechat.ui.MainActivity;
+import cn.ucai.superwechat.ui.NewGroupActivity;
+import cn.ucai.superwechat.ui.PublicGroupsActivity;
 import cn.ucai.superwechat.ui.UserProfileActivity;
 import cn.ucai.superwechat.ui.VideoCallActivity;
+import cn.ucai.superwechat.widget.Constant;
 
 
 public class MFGT {
@@ -81,4 +85,22 @@ public class MFGT {
         intent.setClass(activity,VideoCallActivity.class);
         activity.startActivity(intent);
     }
+
+    public static void gotoNewGroup(Activity activity) {
+        startActivity(activity, NewGroupActivity.class);
+    }
+
+    public static void gotoPublicGroup(Activity activity) {
+        startActivity(activity,PublicGroupsActivity.class);
+    }
+    public static void gotoChatGroup(Activity activity, int chattypeGroup, String groupId) {
+        Intent intent = new Intent();
+        // it is group chat
+        intent.putExtra("chatType", chattypeGroup);
+        intent.putExtra("userId", groupId);
+        intent.setClass(activity, ChatActivity.class);
+        activity.startActivity(intent);
+    }
+
+
 }

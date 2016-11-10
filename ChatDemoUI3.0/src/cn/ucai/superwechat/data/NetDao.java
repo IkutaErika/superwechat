@@ -1,5 +1,6 @@
 package cn.ucai.superwechat.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import java.io.File;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.ui.AddContactActivity;
 import cn.ucai.superwechat.ui.FriendProfileActivity;
+import cn.ucai.superwechat.ui.NewGroupActivity;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MD5;
 import cn.ucai.superwechat.widget.I;
@@ -111,6 +113,34 @@ public class NetDao {
         OkHttpUtils<String> utils=new OkHttpUtils<>(friendProfileActivity);
         utils.url(I.SERVER_ROOT+I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
                 .addParam(I.Contact.USER_NAME,currentuser)
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+
+    public static void createNewGroup(Activity activity, String groupId, String groupName, String description, String owner, boolean aPublic, boolean allowInvites, File file,OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
+        utils.url(I.SERVER_ROOT+I.REQUEST_CREATE_GROUP)
+                .addParam(I.Group.HX_ID,groupId)
+                .addParam(I.Group.NAME,groupName)
+                .addParam(I.Group.DESCRIPTION,description)
+                .addParam(I.Group.OWNER,owner)
+                .addParam(I.Group.IS_PUBLIC,String.valueOf(aPublic))
+                .addParam(I.Group.ALLOW_INVITES,String.valueOf(allowInvites))
+                .addFile2(file)
+                .post()
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+    public static void createNewGroup(Activity activity, String groupId, String groupName, String description, String owner, boolean aPublic, boolean allowInvites,OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
+        utils.url(I.SERVER_ROOT+I.REQUEST_CREATE_GROUP)
+                .addParam(I.Group.HX_ID,groupId)
+                .addParam(I.Group.NAME,groupName)
+                .addParam(I.Group.DESCRIPTION,description)
+                .addParam(I.Group.OWNER,owner)
+                .addParam(I.Group.IS_PUBLIC,String.valueOf(aPublic))
+                .addParam(I.Group.ALLOW_INVITES,String.valueOf(allowInvites))
+                .post()
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }

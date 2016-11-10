@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_top_bar"
-        android:background="@color/top_bar_normal_bg"
+        android:background="@color/black"
         android:gravity="center_vertical" >
 
         <LinearLayout
@@ -18,6 +18,7 @@
             android:onClick="back" >
 
             <ImageView
+                android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -35,6 +36,7 @@
             android:textSize="20sp" />
 
         <Button
+            android:id="@+id/btn_save"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -73,9 +75,10 @@
         android:textSize="18sp" />
     
     
-    <LinearLayout 
+    <LinearLayout
+        android:id="@+id/group_avatar"
         android:layout_width="match_parent"
-       android:layout_height="39dp"
+       android:layout_height="55dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -85,14 +88,45 @@
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Whether_the_public"
+            android:text="群图标"
             android:textColor="#333"
             android:layout_gravity="center_vertical"
             android:textSize="18sp"
             android:layout_weight="1"
             />
         
-        <CheckBox 
+        <ImageView
+            android:id="@+id/iv_groupavatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitXY"
+            android:paddingRight="5dp"
+            android:src="@drawable/ease_group_icon"
+            />
+        
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+       android:layout_height="39dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/em_button_normal_shape"
+        >
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Whether_the_public"
+            android:textColor="#333"
+            android:layout_gravity="center_vertical"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            />
+
+        <CheckBox
             android:id="@+id/cb_public"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,9 +134,9 @@
             android:layout_gravity="center_vertical"
             android:button="@drawable/em_checkbox_bg_selector"
             />
-        
+
     </LinearLayout>
-    
+
     <LinearLayout 
         android:id="@+id/ll_open_invite"
         android:layout_width="match_parent"

@@ -52,6 +52,7 @@ public interface I {
     int CATEGORY_GOOD=1;
     int CAT_ID=0;
     String BROADCAST_UPDATE_CART ="CART" ;
+    String REQUEST_CREATE_GROUP = "createGroup";
 
     interface Goods {
         String KEY_RESULT = "result";
@@ -423,4 +424,12 @@ public interface I {
     String DOWNLOAD_AVATAR_URL= I.SERVER_ROOT+
             REQUEST_DOWNLOAD_AVATAR+I.QUESTION+ IMAGE_URL+"=";
 
+    interface  Group {
+        String HX_ID = "m_group_hxid";//群ID
+        String NAME = "m_group_name";//群名
+        String DESCRIPTION = "m_group_description";//群描述
+        String OWNER = "m_group_owner";//群主
+        String IS_PUBLIC = "m_group_is_public";//是否公开
+        String ALLOW_INVITES = "m_group_allow_invites";//邀请用户
+    }
 }
