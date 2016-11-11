@@ -53,6 +53,7 @@ public interface I {
     int CAT_ID=0;
     String BROADCAST_UPDATE_CART ="CART" ;
     String REQUEST_CREATE_GROUP = "createGroup";
+    String REQUEST_ADD_GROUP_MEMBER = "addGroupMembers";
 
     interface Goods {
         String KEY_RESULT = "result";

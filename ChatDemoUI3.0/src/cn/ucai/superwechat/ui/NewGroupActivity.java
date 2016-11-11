@@ -177,7 +177,7 @@ public class NewGroupActivity extends BaseActivity {
                         option.style = cbMemberInviter.isChecked() ? EMGroupStyle.EMGroupStylePrivateMemberCanInvite : EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
                     }
                    emGroup= EMClient.getInstance().groupManager().createGroup(groupName, desc, members, reason, option);
-                    CreateAppgroup(emGroup.getGroupId(), emGroup.getGroupName(), emGroup.getDescription(), emGroup.getOwner(), emGroup.isPublic(), emGroup.isAllowInvites(),avatarFile);
+                    CreateAppgroup();
                 } catch (final HyphenateException e) {
                     runOnUiThread(new Runnable() {
                         public void run() {
@@ -212,51 +212,36 @@ public class NewGroupActivity extends BaseActivity {
         intent.putExtra("noFaceDetection", true);
         startActivityForResult(intent, REQUESTCODE_CUTTING);
     }
-    private void CreateAppgroup(String groupId, String groupName, String description, String owner, boolean aPublic, boolean allowInvites,File avatarFile) {
+    private void CreateAppgroup() {
+        OkHttpUtils.OnCompleteListener<String> listener=new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String result) {
+                if (result!=null)
+                {
+                    Result result1=ResultUtils.getResultFromJson(result, Group.class);
+                    if (result1!=null&&result1.isRetMsg())
+                    {
+                        Group group = (Group) result1.getRetData();
+                        createsuccess();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        };
         if (avatarFile==null)
         {
-            NetDao.createNewGroup(this, groupId, groupName, description, owner, aPublic, allowInvites, new OkHttpUtils.OnCompleteListener<String>() {
-                @Override
-                public void onSuccess(String result) {
-                    afterCreateGroup(result);
-                }
-
-                @Override
-                public void onError(String error) {
-
-                }
-            });
+            NetDao.createNewGroup(this, emGroup ,listener);
         }
         else {
-            NetDao.createNewGroup(this, groupId, groupName, description, owner, aPublic, allowInvites, avatarFile, new OkHttpUtils.OnCompleteListener<String>() {
-                @Override
-                public void onSuccess(String result) {
-                   afterCreateGroup(result);
-                }
-
-
-
-                @Override
-                public void onError(String error) {
-
-                }
-            });
+            NetDao.createNewGroup(this,emGroup, avatarFile, listener);
         }
 
 
-    }
-
-    private void afterCreateGroup(String result) {
-          if (result!=null)
-          {
-              Result result1=ResultUtils.getResultFromJson(result, Group.class);
-              if (result1!=null&&result1.isRetMsg())
-              {
-                  Group group = (Group) result1.getRetData();
-                  createsuccess();
-
-              }
-          }
     }
 
     @OnClick({R.id.iv_back, R.id.btn_save, R.id.group_avatar, R.id.cb_public, R.id.cb_member_inviter})

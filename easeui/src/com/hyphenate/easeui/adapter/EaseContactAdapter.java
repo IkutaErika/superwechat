@@ -68,6 +68,7 @@ public class EaseContactAdapter extends ArrayAdapter<User> implements SectionInd
             holder = (ViewHolder) convertView.getTag();
         }
         User user = getItem(position);
+        Log.i("superwechat","EaseContactAdapter:"+user.toString());
         if(user == null)
             Log.d("ContactAdapter", position + "");
         String username = user.getMUserName();
@@ -82,6 +83,7 @@ public class EaseContactAdapter extends ArrayAdapter<User> implements SectionInd
         } else {
             holder.headerView.setVisibility(View.GONE);
         }
+
         EaseUserUtils.setAppUserAvatar(getContext(), user.getMUserName(), holder.avatar);
         EaseUserUtils.setCurrentAppUserNick(user.getMUserName(), holder.nameView);
         if(primaryColor != 0)

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.domain.User;
 
 import java.io.File;
@@ -15,6 +16,7 @@ import cn.ucai.superwechat.ui.NewGroupActivity;
 import cn.ucai.superwechat.utils.L;
 import cn.ucai.superwechat.utils.MD5;
 import cn.ucai.superwechat.widget.I;
+import cn.ucai.superwechat.widget.SuperwechatHelper;
 
 
 /**
@@ -117,30 +119,47 @@ public class NetDao {
                 .execute(onCompleteListener);
     }
 
-    public static void createNewGroup(Activity activity, String groupId, String groupName, String description, String owner, boolean aPublic, boolean allowInvites, File file,OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+    public static void createNewGroup(Activity activity, EMGroup emGroup, File file,OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
         OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
         utils.url(I.SERVER_ROOT+I.REQUEST_CREATE_GROUP)
-                .addParam(I.Group.HX_ID,groupId)
-                .addParam(I.Group.NAME,groupName)
-                .addParam(I.Group.DESCRIPTION,description)
-                .addParam(I.Group.OWNER,owner)
-                .addParam(I.Group.IS_PUBLIC,String.valueOf(aPublic))
-                .addParam(I.Group.ALLOW_INVITES,String.valueOf(allowInvites))
+                .addParam(I.Group.HX_ID,emGroup.getGroupId())
+                .addParam(I.Group.NAME,emGroup.getGroupName())
+                .addParam(I.Group.DESCRIPTION,emGroup.getDescription())
+                .addParam(I.Group.OWNER,emGroup.getOwner())
+                .addParam(I.Group.IS_PUBLIC,String.valueOf(emGroup.isPublic()))
+                .addParam(I.Group.ALLOW_INVITES,String.valueOf(emGroup.isAllowInvites()))
                 .addFile2(file)
                 .post()
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }
-    public static void createNewGroup(Activity activity, String groupId, String groupName, String description, String owner, boolean aPublic, boolean allowInvites,OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+    public static void createNewGroup(Activity activity, EMGroup emGroup,OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
         OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
         utils.url(I.SERVER_ROOT+I.REQUEST_CREATE_GROUP)
-                .addParam(I.Group.HX_ID,groupId)
-                .addParam(I.Group.NAME,groupName)
-                .addParam(I.Group.DESCRIPTION,description)
-                .addParam(I.Group.OWNER,owner)
-                .addParam(I.Group.IS_PUBLIC,String.valueOf(aPublic))
-                .addParam(I.Group.ALLOW_INVITES,String.valueOf(allowInvites))
+                .addParam(I.Group.HX_ID,emGroup.getGroupId())
+                .addParam(I.Group.NAME,emGroup.getGroupName())
+                .addParam(I.Group.DESCRIPTION,emGroup.getDescription())
+                .addParam(I.Group.OWNER,emGroup.getOwner())
+                .addParam(I.Group.IS_PUBLIC,String.valueOf(emGroup.isPublic()))
+                .addParam(I.Group.ALLOW_INVITES,String.valueOf(emGroup.isAllowInvites()))
                 .post()
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+    public static void AddGroupMembers(Activity activity, EMGroup emGroup, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+       String members="";
+        for (String m:emGroup.getMembers())
+        {
+            if (!m.equals(SuperwechatHelper.getInstance().getCurrentUsernName()))
+            {
+                members+=m+",";
+            }
+        }
+        members=members.substring(0,members.length()-1);
+        OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
+        utils.url(I.SERVER_ROOT+I.REQUEST_ADD_GROUP_MEMBER)
+                .addParam(I.Group.NAME,members)
+                .addParam(I.Group.HX_ID,emGroup.getGroupId())
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }
