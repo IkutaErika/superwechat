@@ -57,7 +57,7 @@ User users=null;
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     UserDao dao =new UserDao(SplashActivity.this);
-                    final User user= dao.getUsers(EMClient.getInstance().getCurrentUser());
+                     User user= dao.getUsers(EMClient.getInstance().getCurrentUser());
                     SuperwechatHelper.getInstance().setCurrentuser(user);
                     if (user!=null)
                     {
@@ -89,6 +89,7 @@ User users=null;
 
                             }
                         });
+
                     }
                     long costTime = System.currentTimeMillis() - start;
                     //wait

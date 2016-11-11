@@ -72,6 +72,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class SuperwechatHelper {
+    private Map<String, User> noFriendsList=new HashMap<>();
+    public void savetoNoFriends(User user) {
+        noFriendsList.put(user.getMUserName(),user);
+    }
+    public User getNoFriends(String username) {
+      return   noFriendsList.get(username);
+    }
+
     /**
      * data sync listener
      */
@@ -378,10 +386,14 @@ public class SuperwechatHelper {
     private User getAppUserInfo(String username) {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
-        User user = new UserDao(appContext).getUsers(username);
+        User user = userDao.getUsers(username);
         //if user is not in your contacts, set inital letter for him/her
         if (user == null) {
-            user = new User(username);
+            user=getNoFriends(username);
+            if (user==null)
+            {
+                 user =new User(username);
+            }
             EaseCommonUtils.setAppUserInitialLetter(user);
         }
         return user;

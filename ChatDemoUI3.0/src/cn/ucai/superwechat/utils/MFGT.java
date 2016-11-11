@@ -41,15 +41,6 @@ public class MFGT {
         context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
 
-  public static void gotoFrientProfile(Activity activity, User user) {
-        Intent intent=new Intent();
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("currentuser",user);
-         bundle.putInt("style",2);
-        intent.putExtras(bundle);
-        intent.setClass(activity,FriendProfileActivity.class);
-        activity.startActivity(intent);
-    }
     public static void gotoFrientProfile(Activity activity, String username) {
         Intent intent=new Intent();
         intent.putExtra("user",username);
