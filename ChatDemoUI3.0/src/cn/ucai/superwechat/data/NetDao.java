@@ -73,6 +73,15 @@ public class NetDao {
                 .execute(listener);
 
     }
+    public static void updateGroupname(Context context,String id,String muserName,OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(context);
+        utils.url(I.SERVER_ROOT+"updateGroupName")
+                .addParam(I.Group.HX_ID,id)
+                .addParam(I.Group.NAME,muserName)
+                .targetClass(String.class)
+                .execute(listener);
+
+    }
 
     public static void updateAvatar(Context context, String muserName, File file, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
         OkHttpUtils<String> utils=new OkHttpUtils<>(context);
@@ -110,11 +119,25 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
+    public static void deleteGroup(Context appContext, String Hxid, OkHttpUtils.OnCompleteListener<String> listener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(appContext);
+        utils.url(I.SERVER_ROOT+"deleteGroupByHxid")
+                .addParam(I.Group.HX_ID,Hxid)
+                .targetClass(String.class)
+                .execute(listener);
+    }
 
     public static void downloadAllFriends(Context friendProfileActivity, String currentuser, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
         OkHttpUtils<String> utils=new OkHttpUtils<>(friendProfileActivity);
         utils.url(I.SERVER_ROOT+I.REQUEST_DOWNLOAD_CONTACT_ALL_LIST)
                 .addParam(I.Contact.USER_NAME,currentuser)
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+    public static void downloadAllGroupMember(Context friendProfileActivity, String HXID, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+        OkHttpUtils<String> utils=new OkHttpUtils<>(friendProfileActivity);
+        utils.url(I.SERVER_ROOT+"downloadGroupMembersByHxId")
+                .addParam("m_member_group_hxid",HXID)
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }
@@ -143,6 +166,32 @@ public class NetDao {
                 .addParam(I.Group.IS_PUBLIC,String.valueOf(emGroup.isPublic()))
                 .addParam(I.Group.ALLOW_INVITES,String.valueOf(emGroup.isAllowInvites()))
                 .post()
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+    public static void DeleteGroupMembers(Activity activity,String ID, String[] ms, OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+       String members="";
+        for (String m:ms)
+        {
+            if (!m.equals(SuperwechatHelper.getInstance().getCurrentUsernName()))
+            {
+                members+=m+",";
+            }
+        }
+        members=members.substring(0,members.length()-1);
+        OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
+        utils.url(I.SERVER_ROOT+"deleteGroupMembers")
+                .addParam("m_member_group_hxid",ID)
+                .addParam("m_member_user_name",members)
+                .targetClass(String.class)
+                .execute(onCompleteListener);
+    }
+    public static void DeleteGroupMember(Activity activity,String ID,String NAME,  OkHttpUtils.OnCompleteListener<String> onCompleteListener) {
+
+        OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
+        utils.url(I.SERVER_ROOT+"deleteGroupMembers")
+                .addParam("m_member_group_hxid",ID)
+                .addParam("m_member_user_name",NAME)
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }

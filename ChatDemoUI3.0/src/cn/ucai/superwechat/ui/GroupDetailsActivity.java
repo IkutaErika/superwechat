@@ -22,6 +22,13 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMGroup;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.data.NetDao;
+import cn.ucai.superwechat.data.OkHttpUtils;
+import cn.ucai.superwechat.utils.CommonUtils;
+import cn.ucai.superwechat.utils.ResultUtils;
+
+import com.hyphenate.easeui.domain.Group;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
@@ -58,7 +65,6 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	private static final int REQUEST_CODE_EXIT = 1;
 	private static final int REQUEST_CODE_EXIT_DELETE = 2;
 	private static final int REQUEST_CODE_EDIT_GROUPNAME = 5;
-
 
 	private String groupId;
 	private ProgressBar loadingPB;
@@ -167,7 +173,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		String st1 = getResources().getString(R.string.being_added);
 		String st2 = getResources().getString(R.string.is_quit_the_group_chat);
 		String st3 = getResources().getString(R.string.chatting_is_dissolution);
-		String st4 = getResources().getString(R.string.are_empty_group_of_news);
+
 		String st5 = getResources().getString(R.string.is_modify_the_group_name);
 		final String st6 = getResources().getString(R.string.Modify_the_group_name_successful);
 		final String st7 = getResources().getString(R.string.change_the_group_name_failed_please);
@@ -193,7 +199,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			case REQUEST_CODE_EXIT_DELETE: // 解散群
 				progressDialog.setMessage(st3);
 				progressDialog.show();
-				deleteGrop();
+				deletegroup();
 				break;
 
 			case REQUEST_CODE_EDIT_GROUPNAME: //修改群名称
@@ -234,7 +240,23 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		}
 	}
 
-    protected void addUserToBlackList(final String username) {
+	private void deletegroup() {
+		NetDao.deleteGroup(this, group.getGroupId(), new OkHttpUtils.OnCompleteListener<String>() {
+			@Override
+			public void onSuccess(String result) {
+				deleteGrop();
+				CommonUtils.showShortToast("删除成功！");
+			}
+
+			@Override
+			public void onError(String error) {
+
+			}
+		});
+
+	}
+
+	protected void addUserToBlackList(final String username) {
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setCanceledOnTouchOutside(false);
         pd.setMessage(getString(R.string.Are_moving_to_blacklist));
@@ -510,7 +532,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 * 
 	 */
 	private class GridAdapter extends ArrayAdapter<String> {
-
+		final String st13 = getResources().getString(R.string.Are_removed);
+		final String st14 = getResources().getString(R.string.Delete_failed);
+		String st4 = getResources().getString(R.string.are_empty_group_of_news);
 		private int res;
 		public boolean isInDeleteMode;
 		private List<String> objects;
@@ -609,8 +633,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					convertView.findViewById(R.id.badge_delete).setVisibility(View.INVISIBLE);
 				}
 				final String st12 = getResources().getString(R.string.not_delete_myself);
-				final String st13 = getResources().getString(R.string.Are_removed);
-				final String st14 = getResources().getString(R.string.Delete_failed);
+
+
 				final String st15 = getResources().getString(R.string.confirm_the_members);
 				button.setOnClickListener(new OnClickListener() {
 					@Override
@@ -626,7 +650,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 								return;
 							}
 							EMLog.d("group", "remove user from group:" + username);
-							deleteMembersFromGroup(username);
+							//deleteGroupMember(groupId,username);
+                               deleteMembersFromGroup(username);
 						} else {
 							// 正常情况下点击user，可以进入用户详情或者聊天页面等等
 							// startActivity(new
@@ -637,46 +662,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						}
 					}
 
-					/**
-					 * 删除群成员
-					 * 
-					 * @param username
-					 */
-					protected void deleteMembersFromGroup(final String username) {
-						final ProgressDialog deleteDialog = new ProgressDialog(GroupDetailsActivity.this);
-						deleteDialog.setMessage(st13);
-						deleteDialog.setCanceledOnTouchOutside(false);
-						deleteDialog.show();
-						new Thread(new Runnable() {
 
-							@Override
-							public void run() {
-								try {
-									// 删除被选中的成员
-								    EMClient.getInstance().groupManager().removeUserFromGroup(groupId, username);
-									isInDeleteMode = false;
-									runOnUiThread(new Runnable() {
-
-										@Override
-										public void run() {
-											deleteDialog.dismiss();
-											refreshMembers();
-											((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "("
-													+ group.getAffiliationsCount() + st);
-										}
-									});
-								} catch (final Exception e) {
-									deleteDialog.dismiss();
-									runOnUiThread(new Runnable() {
-										public void run() {
-											Toast.makeText(getApplicationContext(), st14 + e.getMessage(), Toast.LENGTH_LONG).show();
-										}
-									});
-								}
-
-							}
-						}).start();
-					}
 				});
 
 				button.setOnLongClickListener(new OnLongClickListener() {
@@ -702,12 +688,70 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				});
 			}
 			return convertView;
-		}
 
+		}
+		/**
+		 * 删除群成员
+		 *
+		 * @param username
+		 */
+		protected void deleteMembersFromGroup(final String username) {
+			final ProgressDialog deleteDialog = new ProgressDialog(GroupDetailsActivity.this);
+			deleteDialog.setMessage("正在删除、、、");
+			deleteDialog.setCanceledOnTouchOutside(false);
+			deleteDialog.show();
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						// 删除被选中的成员
+						EMClient.getInstance().groupManager().removeUserFromGroup(groupId, username);
+						adapter.isInDeleteMode = false;
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								deleteDialog.dismiss();
+								refreshMembers();
+								((TextView) findViewById(R.id.group_name)).setText(group.getGroupName() + "("
+										+ group.getAffiliationsCount() + st);
+							}
+						});
+					} catch (final Exception e) {
+						deleteDialog.dismiss();
+						runOnUiThread(new Runnable() {
+							public void run() {
+								Toast.makeText(getApplicationContext(), st14 + e.getMessage(), Toast.LENGTH_LONG).show();
+							}
+						});
+					}
+
+				}
+			}).start();
+		}
 		@Override
 		public int getCount() {
 			return super.getCount() + 2;
 		}
+	}
+
+	private void deleteGroupMember(String ID,String name) {
+		NetDao.DeleteGroupMember(this,ID,name, new OkHttpUtils.OnCompleteListener<String>() {
+			@Override
+			public void onSuccess(String result) {
+				if (result!=null)
+				{
+					Result result1= ResultUtils.getResultFromJson(result,Group.class);
+				}
+			}
+
+			@Override
+			public void onError(String error) {
+
+			}
+		});
+
 	}
 
 	protected void updateGroup() {
