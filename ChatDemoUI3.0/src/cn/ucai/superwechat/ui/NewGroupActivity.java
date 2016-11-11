@@ -221,16 +221,28 @@ public class NewGroupActivity extends BaseActivity {
                     Result result1=ResultUtils.getResultFromJson(result, Group.class);
                     if (result1!=null&&result1.isRetMsg())
                     {
+                        if (emGroup!=null&&emGroup.getMembers()!=null&&emGroup.getMembers().size()>1){
+                            addGroupMembers();
+                        }
+                        else {
+                            createsuccess();
+                        }
                         Group group = (Group) result1.getRetData();
-                        createsuccess();
-
                     }
+                    else {
+                        progressDialog.dismiss();
+                        CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+                    }
+                }else {
+                    progressDialog.dismiss();
+                    CommonUtils.showShortToast(R.string.Failed_to_create_groups);
                 }
             }
 
             @Override
             public void onError(String error) {
-
+                progressDialog.dismiss();
+                CommonUtils.showShortToast(R.string.Failed_to_create_groups);
             }
         };
         if (avatarFile==null)
@@ -242,6 +254,36 @@ public class NewGroupActivity extends BaseActivity {
         }
 
 
+    }
+
+    private void addGroupMembers() {
+         NetDao.AddGroupMembers(this, emGroup, new OkHttpUtils.OnCompleteListener<String>() {
+    @Override
+    public void onSuccess(String result) {
+        if (result!=null)
+        {
+            Result result1=ResultUtils.getResultFromJson(result,Group.class);
+            if (result1.isRetMsg()&&result1!=null)
+            {
+                createsuccess();
+            }
+            else {
+                progressDialog.dismiss();
+                CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+            }
+        }
+        else {
+            progressDialog.dismiss();
+            CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+        }
+    }
+
+    @Override
+    public void onError(String error) {
+        progressDialog.dismiss();
+        CommonUtils.showShortToast(R.string.Failed_to_create_groups);
+    }
+});
     }
 
     @OnClick({R.id.iv_back, R.id.btn_save, R.id.group_avatar, R.id.cb_public, R.id.cb_member_inviter})

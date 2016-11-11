@@ -158,8 +158,8 @@ public class NetDao {
         members=members.substring(0,members.length()-1);
         OkHttpUtils<String> utils=new OkHttpUtils<>(activity);
         utils.url(I.SERVER_ROOT+I.REQUEST_ADD_GROUP_MEMBER)
-                .addParam(I.Group.NAME,members)
-                .addParam(I.Group.HX_ID,emGroup.getGroupId())
+                .addParam("m_member_user_name",members)
+                .addParam("m_member_group_hxid",emGroup.getGroupId())
                 .targetClass(String.class)
                 .execute(onCompleteListener);
     }

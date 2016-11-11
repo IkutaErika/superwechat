@@ -96,32 +96,34 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			if (msg.getGroupId() != null) { // show group name
 				holder.groupContainer.setVisibility(View.VISIBLE);
 				holder.groupname.setText(msg.getGroupName());
+				EaseUserUtils.setAppGroupAvatar(context,msg.getGroupId(),holder.avator);
 			} else {
 				holder.groupContainer.setVisibility(View.GONE);
+				NetDao.searchUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String result) {
+						if (result != null) {
+							Result result1 = ResultUtils.getResultFromJson(result, User.class);
+							if (result1.isRetMsg() && result1 != null) {
+								User	user = (User) result1.getRetData();
+								if (user!= null) {
+									EaseUserUtils.setCurrentAppUserAvatar((FragmentActivity) context,user,holder.avator);
+									EaseUserUtils.setCurrentAppUserNick(user.getMUserNick(),holder.name);
+								}
+
+							}
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 			}
 			holder.reason.setText(msg.getReason());
 			holder.name.setText(msg.getFrom());
-			NetDao.searchUser(context, msg.getFrom(), new OkHttpUtils.OnCompleteListener<String>() {
-				@Override
-				public void onSuccess(String result) {
-					if (result != null) {
-						Result result1 = ResultUtils.getResultFromJson(result, User.class);
-						if (result1.isRetMsg() && result1 != null) {
-						User	user = (User) result1.getRetData();
-							if (user!= null) {
-								EaseUserUtils.setCurrentAppUserAvatar((FragmentActivity) context,user,holder.avator);
-								EaseUserUtils.setCurrentAppUserNick(user.getMUserNick(),holder.name);
-							}
 
-						}
-					}
-				}
-
-				@Override
-				public void onError(String error) {
-
-				}
-			});
 
 		}
 		// holder.time.setText(DateUtils.getTimestampString(new
