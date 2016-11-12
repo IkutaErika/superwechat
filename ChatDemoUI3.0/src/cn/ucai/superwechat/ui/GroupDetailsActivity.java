@@ -207,31 +207,51 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				if(!TextUtils.isEmpty(returnData)){
 					progressDialog.setMessage(st5);
 					progressDialog.show();
-					
-					new Thread(new Runnable() {
-						public void run() {
-							try {
-								EMClient.getInstance().groupManager().changeGroupName(groupId, returnData);
-								runOnUiThread(new Runnable() {
+					NetDao.updateGroupname(this, group.getGroupId(), returnData, new OkHttpUtils.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String result) {
+							if (result!=null)
+							{
+								new Thread(new Runnable() {
 									public void run() {
-										((TextView) findViewById(R.id.group_name)).setText(returnData + "(" + group.getAffiliationsCount()
-												+ st);
-										progressDialog.dismiss();
-										Toast.makeText(getApplicationContext(), st6, Toast.LENGTH_SHORT).show();
+										try {
+											EMClient.getInstance().groupManager().changeGroupName(groupId, returnData);
+											runOnUiThread(new Runnable() {
+												public void run() {
+													((TextView) findViewById(R.id.group_name)).setText(returnData + "(" + group.getAffiliationsCount()
+															+ st);
+													progressDialog.dismiss();
+													Toast.makeText(getApplicationContext(), st6, Toast.LENGTH_SHORT).show();
+												}
+											});
+
+										} catch (HyphenateException e) {
+											e.printStackTrace();
+											runOnUiThread(new Runnable() {
+												public void run() {
+													progressDialog.dismiss();
+													Toast.makeText(getApplicationContext(), st7, Toast.LENGTH_SHORT).show();
+												}
+											});
+										}
 									}
-								});
-								
-							} catch (HyphenateException e) {
-								e.printStackTrace();
-								runOnUiThread(new Runnable() {
-									public void run() {
-										progressDialog.dismiss();
-										Toast.makeText(getApplicationContext(), st7, Toast.LENGTH_SHORT).show();
-									}
-								});
+								}).start();
+
+								CommonUtils.showShortToast("修改成功！");
+							}
+							else {
+								progressDialog.dismiss();
+								CommonUtils.showShortToast("修改失败！");
 							}
 						}
-					}).start();
+
+						@Override
+						public void onError(String error) {
+                              progressDialog.dismiss();
+							CommonUtils.showShortToast("修改失败！");
+						}
+					});
+
 				}
 				break;
 			default:
